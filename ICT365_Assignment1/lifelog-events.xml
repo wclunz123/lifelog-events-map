@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2001/12/soap-envelope" SOAP-ENV:encodingStyle="http://www.w3.org/2001/12/soap-encoding">
+	<SOAP-ENV:Body xmlns:lle="http://www.xyz.org/lifelogevents" >
+		<lle:Event>
+			<lle:eventid>EV202203011010</lle:eventid>
+			<lle:tweet>
+				<lle:text>This is some tweet in my day</lle:text>
+				<lle:location>
+					<lle:lat>1.443817</lle:lat>
+					<lle:long>103.714221</lle:long>
+				</lle:location>
+				<lle:datetimestamp>20220301101059125</lle:datetimestamp>
+			</lle:tweet>
+		</lle:Event>
+		
+		<lle:Event>
+			<lle:eventid>EV202203011011</lle:eventid>
+			<lle:facebook-status-update>
+				<lle:text>This is some status update in my day</lle:text>
+				<lle:location>
+					<lle:lat>1.256243</lle:lat>
+					<lle:long>103.671821</lle:long>
+				</lle:location>
+				<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+			</lle:facebook-status-update>
+		</lle:Event>
+		
+		<lle:Event>
+			<lle:eventid>EV202203011012</lle:eventid>
+			<lle:photo>
+				<lle:filepath>/photos/image.jpg</lle:filepath>
+				<lle:location>
+					<lle:lat>1.428985</lle:lat>
+					<lle:long>103.553081</lle:long>
+				</lle:location>
+			</lle:photo>
+		</lle:Event>
+		<lle:Event>
+			<lle:eventid>EV202203011013</lle:eventid>
+			<lle:video>
+				<lle:filepath>/videos/film.mp4</lle:filepath>
+				<lle:location>
+					<lle:lat>1.400786</lle:lat>
+					<lle:long>103.774011</lle:long>
+				</lle:location>
+				<lle:start-time>
+					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+				</lle:start-time>
+				<lle:end-time>
+					<lle:datetimestamp>20220301205559396</lle:datetimestamp>
+				</lle:end-time>
+			</lle:video>
+		</lle:Event>
+		<lle:Event>
+			<lle:eventid>EV202203011014</lle:eventid>
+			<lle:tracklog>
+				<lle:filepath>/tracklog/track.gpx</lle:filepath>
+				<lle:data>
+					Track log data here...
+				</lle:data>
+				<lle:start-time>
+					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+				</lle:start-time>
+				<lle:end-time>
+					<lle:datetimestamp>20220301205559396</lle:datetimestamp>
+				</lle:end-time>
+			</lle:tracklog>
+		</lle:Event>
+		<lle:Event>
+			<lle:eventid>EV202203011015</lle:eventid>
+			<lle:tweet>
+				<lle:text>This is some tweet in my day</lle:text>
+				<lle:location>
+					<lle:lat>1.421722</lle:lat>
+					<lle:long>103.879754</lle:long>
+				</lle:location>
+				<lle:datetimestamp>20220301101059125</lle:datetimestamp>
+			</lle:tweet>
+		</lle:Event>
+
+		<lle:Event>
+			<lle:eventid>EV202203011016</lle:eventid>
+			<lle:facebook-status-update>
+				<lle:text>This is some status update in my day</lle:text>
+				<lle:location>
+					<lle:lat>1.256243</lle:lat>
+					<lle:long>103.671821</lle:long>
+				</lle:location>
+				<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+			</lle:facebook-status-update>
+		</lle:Event>
+
+		<lle:Event>
+			<lle:eventid>EV202203011017</lle:eventid>
+			<lle:photo>
+				<lle:filepath>/photos/image.jpg</lle:filepath>
+				<lle:location>
+					<lle:lat>1.333171</lle:lat>
+					<lle:long>103.873917</lle:long>
+				</lle:location>
+			</lle:photo>
+		</lle:Event>
+		<lle:Event>
+			<lle:eventid>EV202203011018</lle:eventid>
+			<lle:video>
+				<lle:filepath>/videos/film.mp4</lle:filepath>
+				<lle:location>
+					<lle:lat>1.394265</lle:lat>
+					<lle:long>103.886620</lle:long>
+				</lle:location>
+				<lle:start-time>
+					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+				</lle:start-time>
+				<lle:end-time>
+					<lle:datetimestamp>20220301205159125</lle:datetimestamp>
+				</lle:end-time>
+			</lle:video>
+		</lle:Event>
+		<lle:Event>
+			<lle:eventid>EV202203011019</lle:eventid>
+			<lle:tracklog>
+				<lle:filepath>/tracklog/track.gpx</lle:filepath>
+				<lle:data>
+					Track log data here...
+				</lle:data>
+				<lle:start-time>
+					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+				</lle:start-time>
+				<lle:end-time>
+					<lle:datetimestamp>20220301205159125</lle:datetimestamp>
+				</lle:end-time>
+			</lle:tracklog>
+		</lle:Event>
+		<lle:Event>
+			<lle:eventid>EV202203011020</lle:eventid>
+			<lle:tweet>
+				<lle:text>This is some tweet in my day</lle:text>
+				<lle:location>
+					<lle:lat>1.343124</lle:lat>
+					<lle:long>104.006783</lle:long>
+				</lle:location>
+				<lle:datetimestamp>20220301101059125</lle:datetimestamp>
+			</lle:tweet>
+		</lle:Event>
+
+		<lle:Event>
+			<lle:eventid>EV202203011021</lle:eventid>
+			<lle:facebook-status-update>
+				<lle:text>This is some status update in my day</lle:text>
+				<lle:location>
+					<lle:lat>1.256243</lle:lat>
+					<lle:long>103.671821</lle:long>
+				</lle:location>
+				<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+			</lle:facebook-status-update>
+		</lle:Event>
+
+		<lle:Event>
+			<lle:eventid>EV202203011022</lle:eventid>
+			<lle:photo>
+				<lle:filepath>/photos/image.jpg</lle:filepath>
+				<lle:location>
+					<lle:lat>1.349646</lle:lat>
+					<lle:long>103.766114</lle:long>
+				</lle:location>
+			</lle:photo>
+		</lle:Event>
+		<lle:Event>
+			<lle:eventid>EV202203011023</lle:eventid>
+			<lle:video>
+				<lle:filepath>/videos/film.mp4</lle:filepath>
+				<lle:location>
+					<lle:lat>1.244616</lle:lat>
+					<lle:long>103.833749</lle:long>
+				</lle:location>
+				<lle:start-time>
+					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+				</lle:start-time>
+				<lle:end-time>
+					<lle:datetimestamp>20220301205159125</lle:datetimestamp>
+				</lle:end-time>
+			</lle:video>
+		</lle:Event>
+		<lle:Event>
+			<lle:eventid>EV202203011024</lle:eventid>
+			<lle:tracklog>
+				<lle:filepath>/tracklog/track.gpx</lle:filepath>
+				<lle:data>
+					Track log data here...
+				</lle:data>
+				<lle:start-time>
+					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+				</lle:start-time>
+				<lle:end-time>
+					<lle:datetimestamp>20220301205159125</lle:datetimestamp>
+				</lle:end-time>
+			</lle:tracklog>
+		</lle:Event>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
