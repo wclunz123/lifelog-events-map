@@ -20,7 +20,7 @@ namespace ICT365_Assignment1
 {
     public partial class MainForm : Form
     {
-
+        public static Location selectedLocation;
         public static Event selectedEvent;
 
         public MainForm()
@@ -33,6 +33,7 @@ namespace ICT365_Assignment1
             Dictionary<string, Event> result = new Dictionary<string, Event>();
             XDocument xdocument = XDocument.Load("lifelog-events.xml");
             XNamespace nFc = "http://www.xyz.org/lifelogevents";
+
             IEnumerable<XElement> xElements = xdocument.Descendants(nFc + "Event");
             foreach (XElement ex in xElements)
             {
@@ -50,76 +51,41 @@ namespace ICT365_Assignment1
                     if (tweetXName != null)
                     {
                         var twSerial = new XmlSerializer(typeof(TwitterEvent));
-                        TwitterEvent twitterEvent = twSerial.Deserialize(eventType.CreateReader()) as TwitterEvent;
+                        Event twitterEvent = twSerial.Deserialize(eventType.CreateReader()) as Event;
                         twitterEvent.EventID = eventId.ToString();
                         result.Add(eventId, twitterEvent);
-                        //MessageBox.Show(twitterEvent.ToString());
                     }
                     else if (fbXName != null)
                     {
                         var fbSerial = new XmlSerializer(typeof(FacebookEvent));
-                        FacebookEvent fbEvent = fbSerial.Deserialize(eventType.CreateReader()) as FacebookEvent;
+                        Event fbEvent = fbSerial.Deserialize(eventType.CreateReader()) as Event;
                         fbEvent.EventID = eventId.ToString();
                         result.Add(eventId, fbEvent);
-                        //MessageBox.Show(fbEvent.ToString());
                     }
                     else if (photoXName != null)
                     {
                         var photoSerial = new XmlSerializer(typeof(PhotoEvent));
-                        PhotoEvent photoEvent = photoSerial.Deserialize(eventType.CreateReader()) as PhotoEvent;
+                        Event photoEvent = photoSerial.Deserialize(eventType.CreateReader()) as Event;
                         photoEvent.EventID = eventId.ToString();
                         result.Add(eventId, photoEvent);
-                        //MessageBox.Show(photoEvent.ToString());
                     }
                     else if (videoXName != null)   
                     {
                         var videoSerial = new XmlSerializer(typeof(VideoEvent));
-                        VideoEvent videoEvent = videoSerial.Deserialize(eventType.CreateReader()) as VideoEvent;
+                        Event videoEvent = videoSerial.Deserialize(eventType.CreateReader()) as Event;
                         videoEvent.EventID = eventId.ToString();
                         result.Add(eventId, videoEvent);
-                        //MessageBox.Show(videoEvent.ToString());
                     }
                     else
                     {
                         var tracklogSerial = new XmlSerializer(typeof(TracklogEvent));
-                        TracklogEvent tracklogEvent = tracklogSerial.Deserialize(eventType.CreateReader()) as TracklogEvent;
+                        Event tracklogEvent = tracklogSerial.Deserialize(eventType.CreateReader()) as Event;
                         tracklogEvent.EventID = eventId.ToString();
                         result.Add(eventId, tracklogEvent);
-                        //MessageBox.Show(tracklogEvent.ToString());
                     }
                 }
             }
-
-            foreach (KeyValuePair<string, Event> kvp in result)
-            {
-                
-                if (kvp.Value.GetLocation() != null)
-                {
-                    if (kvp.Value is FacebookEvent)
-                    {
-                        Bitmap fbIcon = (Bitmap)Image.FromFile("img/facebook.png");
-                        createMarkerWithImage(kvp.Value, fbIcon);
-                    }
-                    else if (kvp.Value is TwitterEvent)
-                    {
-                        Bitmap twitterIcon = (Bitmap)Image.FromFile("img/twitter.png");
-                        createMarkerWithImage(kvp.Value, twitterIcon);
-                    }
-                    else if (kvp.Value is PhotoEvent)
-                    {
-                        if (kvp.Value.GetPath() != null)
-                        {
-                            Bitmap imageIcon = (Bitmap)Image.FromFile(kvp.Value.GetPath());
-                            createMarkerWithImage(kvp.Value, imageIcon);
-                        }
-                    }
-                    else 
-                    {
-                        createMarker(kvp.Value.GetLocation().Latitude, kvp.Value.GetLocation().Longitude, GMarkerGoogleType.blue_pushpin);
-                    }
-                        
-                }
-            }
+            PlotMarkerOnMap(result);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -131,7 +97,7 @@ namespace ICT365_Assignment1
         {
             gMapControl.MapProvider = GMapProviders.GoogleMap;
             gMapControl.ShowCenter = false;
-            gMapControl.Position = new PointLatLng(1.417604, 103.810403);
+            gMapControl.Position = new PointLatLng(1.391519, 103.784654);
             gMapControl.DragButton = MouseButtons.Left;
             gMapControl.MinZoom = 5;
             gMapControl.MaxZoom = 50;
@@ -146,13 +112,24 @@ namespace ICT365_Assignment1
                 double lng = gMapControl.FromLocalToLatLng(e.X, e.Y).Lng;
                 txtLatitude.Text = lat.ToString();
                 txtLongitude.Text = lng.ToString();
+
+                selectedLocation = new Location(lat, lng);
             }
         }
 
         private void gMapControl_OnMarkerClick(GMapMarker item, MouseEventArgs e)
         {
-            MessageBox.Show(String.Format("Marker {0} was clicked.", item.Tag.ToString()));
+            MessageBox.Show(item.Tag.ToString());
             selectedEvent = (Event)item.Tag;
+            if (selectedEvent == null)
+            {
+                MessageBox.Show("Please select an event.");
+            }
+            else
+            {
+                RetrieveEventForm retrieveEventForm = new RetrieveEventForm(selectedEvent);
+                retrieveEventForm.ShowDialog();
+            }
         }
 
         private void addEventButton_Click(object sender, EventArgs e)
@@ -163,6 +140,8 @@ namespace ICT365_Assignment1
 
         private void retrieveEventButton_Click(object sender, EventArgs e)
         {
+
+            // Find nearest event
             if (selectedEvent == null)
             {
                 MessageBox.Show("Please select an event.");
@@ -176,16 +155,17 @@ namespace ICT365_Assignment1
             
         }
 
-        private void createMarker(double lat, double lng, GMarkerGoogleType icon)
+        private void CreateMarkerWithIcon(Event ev, GMarkerGoogleType icon)
         {
-            PointLatLng point = new PointLatLng(lat, lng);
+            PointLatLng point = new PointLatLng(ev.GetLocation().Latitude, ev.GetLocation().Longitude);
             GMapMarker marker = new GMarkerGoogle(point, icon);
             GMapOverlay overlay = new GMapOverlay("markers");
             overlay.Markers.Add(marker);
+            marker.Tag = ev;
             gMapControl.Overlays.Add(overlay);
         }
 
-        private void createMarkerWithImage(Event ev, Bitmap img)
+        private void CreateMarkerWithImage(Event ev, Bitmap img)
         {
             PointLatLng point = new PointLatLng(ev.GetLocation().Latitude, ev.GetLocation().Longitude);
             GMapMarker marker = new GMarkerGoogle(point, img);
@@ -193,6 +173,46 @@ namespace ICT365_Assignment1
             overlay.Markers.Add(marker);
             marker.Tag = ev;
             gMapControl.Overlays.Add(overlay);
+        }
+
+        private void PlotMarkerOnMap(Dictionary<string, Event> result)
+        {
+            foreach (KeyValuePair<string, Event> kvp in result)
+            {
+                if (kvp.Value.GetLocation() != null)
+                {
+                    if (kvp.Value is FacebookEvent)
+                    {
+                        Bitmap fbIcon = (Bitmap)Image.FromFile("img/facebook.png");
+                        CreateMarkerWithImage(kvp.Value, fbIcon);
+                    }
+                    else if (kvp.Value is TwitterEvent)
+                    {
+                        Bitmap twitterIcon = (Bitmap)Image.FromFile("img/twitter.png");
+                        CreateMarkerWithImage(kvp.Value, twitterIcon);
+                    }
+                    else if (kvp.Value is PhotoEvent)
+                    {
+                        if (kvp.Value.GetPath() != null)
+                        {
+                            Bitmap imageIcon = (Bitmap)Image.FromFile(kvp.Value.GetPath());
+                            CreateMarkerWithImage(kvp.Value, imageIcon);
+                        }
+                    }
+                    else if (kvp.Value is VideoEvent)
+                    {
+                        if (kvp.Value.GetPath() != null)
+                        {
+                            CreateMarkerWithIcon(kvp.Value, GMarkerGoogleType.red_pushpin);
+                        }
+                    }
+                    else
+                    {
+                        CreateMarkerWithIcon(kvp.Value, GMarkerGoogleType.blue_pushpin);
+                    }
+
+                }
+            }
         }
     }
 }

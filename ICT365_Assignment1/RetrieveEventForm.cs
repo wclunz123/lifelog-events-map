@@ -15,7 +15,8 @@ namespace ICT365_Assignment1
         public RetrieveEventForm(Event ev)
         {
             InitializeComponent();
-            textBox1.Text = ev.ToString();
+            textBox1.Text = ev.EventID;
+            textBox3.Text = ev.GetLocation().Latitude + ", " + ev.GetLocation().Longitude;
         }
 
         private void RetrieveEventForm_Load(object sender, EventArgs e)
