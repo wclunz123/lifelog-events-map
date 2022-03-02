@@ -12,9 +12,20 @@ namespace ICT365_Assignment1
 {
     public partial class RetrieveEventForm : Form
     {
-        public RetrieveEventForm()
+        public RetrieveEventForm(Event ev)
         {
             InitializeComponent();
+            textBox1.Text = ev.ToString();
+        }
+
+        private void RetrieveEventForm_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }

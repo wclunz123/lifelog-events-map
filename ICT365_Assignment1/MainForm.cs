@@ -20,12 +20,15 @@ namespace ICT365_Assignment1
 {
     public partial class MainForm : Form
     {
+
+        public static Event selectedEvent;
+
         public MainForm()
         {
             InitializeComponent();
-            WindowState = FormWindowState.Maximized;
-            MinimumSize = this.Size;
-            MaximumSize = this.Size;
+            //WindowState = FormWindowState.Maximized;
+            //MinimumSize = this.Size;
+            //MaximumSize = this.Size;
 
             Dictionary<string, Event> result = new Dictionary<string, Event>();
             XDocument xdocument = XDocument.Load("lifelog-events.xml");
@@ -95,12 +98,20 @@ namespace ICT365_Assignment1
                     if (kvp.Value is FacebookEvent)
                     {
                         Bitmap fbIcon = (Bitmap)Image.FromFile("img/facebook.png");
-                        createMarkerWithImage(kvp.Value.GetLocation().Latitude, kvp.Value.GetLocation().Longitude, fbIcon);
+                        createMarkerWithImage(kvp.Value, fbIcon);
                     }
                     else if (kvp.Value is TwitterEvent)
                     {
                         Bitmap twitterIcon = (Bitmap)Image.FromFile("img/twitter.png");
-                        createMarkerWithImage(kvp.Value.GetLocation().Latitude, kvp.Value.GetLocation().Longitude, twitterIcon);
+                        createMarkerWithImage(kvp.Value, twitterIcon);
+                    }
+                    else if (kvp.Value is PhotoEvent)
+                    {
+                        if (kvp.Value.GetPath() != null)
+                        {
+                            Bitmap imageIcon = (Bitmap)Image.FromFile(kvp.Value.GetPath());
+                            createMarkerWithImage(kvp.Value, imageIcon);
+                        }
                     }
                     else 
                     {
@@ -120,7 +131,7 @@ namespace ICT365_Assignment1
         {
             gMapControl.MapProvider = GMapProviders.GoogleMap;
             gMapControl.ShowCenter = false;
-            gMapControl.Position = new PointLatLng(1.369931, 103.812619);
+            gMapControl.Position = new PointLatLng(1.417604, 103.810403);
             gMapControl.DragButton = MouseButtons.Left;
             gMapControl.MinZoom = 5;
             gMapControl.MaxZoom = 50;
@@ -138,9 +149,10 @@ namespace ICT365_Assignment1
             }
         }
 
-        private void gMapControl_OnMarkerClick(object sender, MouseEventArgs e)
+        private void gMapControl_OnMarkerClick(GMapMarker item, MouseEventArgs e)
         {
-            MessageBox.Show("Clicked!");
+            MessageBox.Show(String.Format("Marker {0} was clicked.", item.Tag.ToString()));
+            selectedEvent = (Event)item.Tag;
         }
 
         private void addEventButton_Click(object sender, EventArgs e)
@@ -151,8 +163,17 @@ namespace ICT365_Assignment1
 
         private void retrieveEventButton_Click(object sender, EventArgs e)
         {
-            RetrieveEventForm retrieveEventForm = new RetrieveEventForm();
-            retrieveEventForm.ShowDialog();
+            if (selectedEvent == null)
+            {
+                MessageBox.Show("Please select an event.");
+            } 
+            else
+            {
+                RetrieveEventForm retrieveEventForm = new RetrieveEventForm(selectedEvent);
+                retrieveEventForm.ShowDialog();
+            }
+
+            
         }
 
         private void createMarker(double lat, double lng, GMarkerGoogleType icon)
@@ -164,19 +185,14 @@ namespace ICT365_Assignment1
             gMapControl.Overlays.Add(overlay);
         }
 
-        private void createMarkerWithImage(double lat, double lng, Bitmap img)
+        private void createMarkerWithImage(Event ev, Bitmap img)
         {
-            PointLatLng point = new PointLatLng(lat, lng);
+            PointLatLng point = new PointLatLng(ev.GetLocation().Latitude, ev.GetLocation().Longitude);
             GMapMarker marker = new GMarkerGoogle(point, img);
             GMapOverlay overlay = new GMapOverlay("markers");
             overlay.Markers.Add(marker);
+            marker.Tag = ev;
             gMapControl.Overlays.Add(overlay);
-        }
-
-
-        public List<string> Convert(IEnumerable<XElement> items)
-        {
-            return items.Select(item => item.Value.ToString()).ToList();
         }
     }
 }

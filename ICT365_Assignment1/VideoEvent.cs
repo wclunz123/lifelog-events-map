@@ -26,6 +26,10 @@ namespace ICT365_Assignment1
         {
             return this.Location;
         }
+        public override string GetPath()
+        {
+            return this.Path;
+        }
 
         public VideoEvent() : base()
         {

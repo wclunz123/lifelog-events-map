@@ -77,10 +77,10 @@ namespace ICT365_Assignment1
             this.gMapControl.ShowTileGridLines = false;
             this.gMapControl.Size = new System.Drawing.Size(798, 549);
             this.gMapControl.TabIndex = 1;
-            this.gMapControl.Zoom = 0D;
+            this.gMapControl.Zoom = 2D;
+            this.gMapControl.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.gMapControl_OnMarkerClick);
             this.gMapControl.Load += new System.EventHandler(this.gMapControl_Load);
             this.gMapControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gMapControl_MouseClick);
-            this.gMapControl.OnMarkerClick += new MarkerClick(gMapControl_OnMarkerClick);
             // 
             // addEventButton
             // 
@@ -148,7 +148,7 @@ namespace ICT365_Assignment1
             this.lblInstruction.TabIndex = 8;
             this.lblInstruction.Text = "Click on anywhere of the map to create an event.";
             // 
-            // Form1
+            // MainForm
             // 
             this.ClientSize = new System.Drawing.Size(980, 549);
             this.Controls.Add(this.lblInstruction);
@@ -160,7 +160,7 @@ namespace ICT365_Assignment1
             this.Controls.Add(this.addEventButton);
             this.Controls.Add(this.gMapControl);
             this.Controls.Add(this.splitter2);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "ICT365_Assignment1";
             this.ResumeLayout(false);
             this.PerformLayout();
