@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 
 namespace ICT365_Assignment1
 {
+    [Serializable]
     [XmlRoot(Namespace = "http://www.xyz.org/lifelogevents", ElementName = "facebook-status-update", DataType = "string", IsNullable = true)]
     public class FacebookEvent : Event
     {
@@ -41,6 +42,13 @@ namespace ICT365_Assignment1
             this.Text = "";
             this.Location = new Location();
             this.DateTime = "";
+        }
+
+        public FacebookEvent(string eventID, string text, Location loc, string datetime) : base(eventID)
+        {
+            this.Text = text;
+            this.Location = loc;
+            this.DateTime = datetime;
         }
     }
 }

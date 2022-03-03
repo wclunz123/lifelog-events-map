@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace ICT365_Assignment1
 {
-    [Serializable()]
+    [Serializable]
     [XmlRoot(Namespace = "http://www.xyz.org/lifelogevents", ElementName = "video", DataType = "string", IsNullable = true)]
     public class VideoEvent : Event
     {
@@ -17,10 +17,10 @@ namespace ICT365_Assignment1
         [XmlElement("location", Namespace = "http://www.xyz.org/lifelogevents")]
         public Location Location { get; set; }
 
-        [XmlElement("start-time", Namespace = "http://www.xyz.org/lifelogevents")]
+        [XmlElement(ElementName = "start-time", DataType = "string", Namespace = "http://www.xyz.org/lifelogevents")]
         public string StartTime { get; set; }
 
-        [XmlElement("end-time", Namespace = "http://www.xyz.org/lifelogevents")]
+        [XmlElement(ElementName = "end-time", DataType = "string", IsNullable = false, Namespace = "http://www.xyz.org/lifelogevents")]
         public string EndTime { get; set; }
 
         public override Location GetLocation()
@@ -46,6 +46,13 @@ namespace ICT365_Assignment1
             this.Location = new Location();
             this.StartTime = "";
             this.EndTime = "";
+        }
+        public VideoEvent(string eventID, string path, Location loc, string startTime, string endTime) : base(eventID)
+        {
+            this.Path = path;
+            this.Location = loc;
+            this.StartTime = startTime;
+            this.EndTime = endTime;
         }
     }
 }

@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace ICT365_Assignment1
 {
@@ -16,16 +20,17 @@ namespace ICT365_Assignment1
         public FillEventDetailForm(string EventString, Location SelectedLocation)
         {
             InitializeComponent();
+
             txtEventId.Text = "ID1234";
             this.SelectedLocation = SelectedLocation;
             txtEventType.Text = EventString;
+
             dateTimePicker1.Hide();
             dateTimePicker2.Hide();
             uploadFileButton.Hide();
 
             if (EventString == "Twitter")
             {
-                TwitterEvent newEvent = new TwitterEvent();
                 label1.Text = "Text";
                 label2.Text = "Location";
                 textBox2.Text = SelectedLocation.Latitude + ", " + SelectedLocation.Longitude;
@@ -33,13 +38,14 @@ namespace ICT365_Assignment1
                 label3.Text = "Timestamp";
                 textBox3.Dispose();
                 dateTimePicker1.Show();
-    
+
                 label4.Hide();
                 textBox4.Hide();
+
+
             }
             else if (EventString == "Facebook")
             {
-                FacebookEvent newEvent = new FacebookEvent();
                 label1.Text = "Text";
                 label2.Text = "Location";
                 textBox2.Text = SelectedLocation.Latitude + ", " + SelectedLocation.Longitude;
@@ -53,20 +59,29 @@ namespace ICT365_Assignment1
             }
             else if (EventString == "Photo")
             {
-                PhotoEvent newEvent = new PhotoEvent();
+
                 label1.Text = "Filepath";
-                textBox1.Dispose();
+                textBox1.Hide();
                 uploadFileButton.Show();
                 uploadFileButton.Text = "Upload Photo (.png .jpg .jpeg)";
                 uploadFileButton.Click += (sender, e) =>
                 {
-                    OpenFileDialog file = new OpenFileDialog();
-                    file.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
-                    file.Title = "Select an image: ";
-                    if (file.ShowDialog() == DialogResult.OK)
+                    try
                     {
-                        var filePath = file.FileName;
-                        uploadFileButton.Text = filePath.ToString();
+                        OpenFileDialog file = new OpenFileDialog();
+                        file.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+                        file.Title = "Select an image: ";
+                        if (file.ShowDialog() == DialogResult.OK)
+                        {
+                            var filePath = file.FileName;
+                            uploadFileButton.Hide();
+                            textBox1.Show();
+                            textBox1.Text = filePath.ToString();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString());
                     }
                 };
 
@@ -81,9 +96,8 @@ namespace ICT365_Assignment1
             }
             else if (EventString == "Video")
             {
-                VideoEvent newEvent = new VideoEvent();
                 label1.Text = "Filepath";
-                textBox1.Dispose();
+                textBox1.Hide();
                 uploadFileButton.Text = "Upload Video (.mp4)";
                 uploadFileButton.Show();
                 uploadFileButton.Click += (sender, e) =>
@@ -96,7 +110,9 @@ namespace ICT365_Assignment1
                         if (file.ShowDialog() == DialogResult.OK)
                         {
                             var filePath = file.FileName;
-                            uploadFileButton.Text = filePath.ToString();
+                            uploadFileButton.Hide();
+                            textBox1.Show();
+                            textBox1.Text = filePath.ToString();
                         }
                     }
                     catch (Exception ex)
@@ -116,16 +132,36 @@ namespace ICT365_Assignment1
                 label4.Text = "End Time";
                 textBox4.Dispose();
                 dateTimePicker2.Show();
+
             }
             else if (EventString == "Tracklog")
             {
-                TracklogEvent newEvent = new TracklogEvent();
                 label1.Text = "Filepath";
-                textBox1.Dispose();
+                textBox1.Hide();
                 uploadFileButton.Text = "Upload Tracklog (.gpx)";
                 uploadFileButton.Show();
-                label2.Text = "Data";
+                uploadFileButton.Click += (sender, e) =>
+                {
+                    try
+                    {
+                        OpenFileDialog file = new OpenFileDialog();
+                        file.Filter = "Media Files|*.mpg;*.avi;*.wma;*.mov;*.wav;*.mp2;*.mp3|All Files|*.*";
+                        file.Title = "Select a video: ";
+                        if (file.ShowDialog() == DialogResult.OK)
+                        {
+                            var filePath = file.FileName;
+                            uploadFileButton.Hide();
+                            textBox1.Show();
+                            textBox1.Text = filePath.ToString();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString());
+                    }
+                };
 
+                label2.Text = "Data";
                 label3.Text = "Start Time";
                 textBox3.Dispose();
                 dateTimePicker1.Show();
@@ -147,7 +183,62 @@ namespace ICT365_Assignment1
 
         private void addEventButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Added");
+
+            Event newEvent;
+            if (txtEventType.Text == "Twitter")
+            {
+                string dateTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
+                newEvent = new TwitterEvent(txtEventId.Text, textBox1.Text, SelectedLocation, dateTime);
+            }
+            else if (txtEventType.Text == "Facebook")
+            {
+                string dateTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
+                newEvent = new FacebookEvent(txtEventId.Text, textBox1.Text, SelectedLocation, dateTime);
+            }
+            else if (txtEventType.Text == "Photo")
+            {
+                newEvent = new PhotoEvent(txtEventId.Text, textBox1.Text, SelectedLocation);
+            }
+            else if (txtEventType.Text == "Video")
+            {
+                string startTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
+                string endTime = dateTimePicker2.Value.ToString("yyyyMMddHHmmss");
+                newEvent = new VideoEvent(txtEventId.Text, textBox1.Text, SelectedLocation, startTime, endTime);
+            }
+            else
+            {
+                string startTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
+                string endTime = dateTimePicker2.Value.ToString("yyyyMMddHHmmss");
+                newEvent = new TracklogEvent(txtEventId.Text, textBox1.Text, textBox2.Text, startTime, endTime);
+            }
+
+            MessageBox.Show(newEvent.ToString());
+
+            
+            XmlSerializerNamespaces xmlNameSpace = new XmlSerializerNamespaces();
+            xmlNameSpace.Add("lle", "http://www.xyz.org/lifelogevents");
+
+            XmlSerializer serializer = new XmlSerializer(typeof(Event));
+            XmlSerializer childSerializer = new XmlSerializer(newEvent.GetType());
+
+            // Create a FileStream to write with.
+            Stream writer = new FileStream("lifelog-events.xml", FileMode.Append);
+
+            childSerializer.Serialize(writer, newEvent, xmlNameSpace);
+            // Serialize the object, and close the TextWriter
+            serializer.Serialize(writer, newEvent, xmlNameSpace);
+            writer.Close();
+
+
+            //XmlDocument xdoc = new XmlDocument();
+            //xdoc.Load("lifelog-events.xml");
+
+            //XmlNode parentNode = xdoc.DocumentElement;
+            //XmlNode childNode = xdoc.CreateElement(nFc + "Event");
+            //childNode.InnerText = txtEventId.Text;
+
+            //parentNode.AppendChild(childNode);
+            //xdoc.Save("lifelog-events.xml");
 
             this.Close();
         }

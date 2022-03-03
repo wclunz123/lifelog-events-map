@@ -196,5 +196,6 @@
 				</lle:end-time>
 			</lle:tracklog>
 		</lle:Event>
+		
 	</SOAP-ENV:Body>
 </SOAP-ENV:Envelope>

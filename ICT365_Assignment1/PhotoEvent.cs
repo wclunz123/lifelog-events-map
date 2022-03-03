@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 
 namespace ICT365_Assignment1
 {
+    [Serializable]
     [XmlRoot(Namespace = "http://www.xyz.org/lifelogevents", ElementName = "photo", DataType = "string", IsNullable = true)]
     public class PhotoEvent : Event
     {
@@ -36,6 +37,12 @@ namespace ICT365_Assignment1
         {
             this.Path = "";
             this.Location = new Location();
+        }
+
+        public PhotoEvent(string eventID, string path, Location loc) : base(eventID)
+        {
+            this.Path = path;
+            this.Location = loc;
         }
     }
 }

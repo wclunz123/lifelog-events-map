@@ -35,7 +35,7 @@ namespace ICT365_Assignment1
             //MaximumSize = this.Size;
 
             //Dictionary<string, Event> result = new Dictionary<string, Event>();
-            XDocument xdocument = XDocument.Load("lifelog-events.xml");
+            XDocument xdocument = XDocument.Load(@"lifelog-events.xml");
             XNamespace nFc = "http://www.xyz.org/lifelogevents";
 
             IEnumerable<XElement> xElements = xdocument.Descendants(nFc + "Event");

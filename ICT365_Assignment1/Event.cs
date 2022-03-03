@@ -8,6 +8,12 @@ using System.Xml.Serialization;
 
 namespace ICT365_Assignment1
 {
+    [XmlInclude(typeof(TwitterEvent))]
+    [XmlInclude(typeof(FacebookEvent))]
+    [XmlInclude(typeof(PhotoEvent))]
+    [XmlInclude(typeof(VideoEvent))]
+    [XmlInclude(typeof(TracklogEvent))]
+    [Serializable]
     [XmlRoot(ElementName = "Event", Namespace = "http://www.xyz.org/lifelogevents")]
     abstract public class Event
     {

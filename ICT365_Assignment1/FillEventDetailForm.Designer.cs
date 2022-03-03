@@ -46,6 +46,7 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.uploadFileButton = new System.Windows.Forms.Button();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblHeader
@@ -226,11 +227,21 @@
             this.dateTimePicker2.TabIndex = 18;
             this.dateTimePicker2.Visible = false;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(46, 257);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(44, 16);
+            this.label5.TabIndex = 19;
+            this.label5.Text = "label5";
+            // 
             // FillEventDetailForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(472, 293);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.dateTimePicker2);
             this.Controls.Add(this.uploadFileButton);
             this.Controls.Add(this.textBox4);
@@ -276,5 +287,6 @@
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Button uploadFileButton;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.Label label5;
     }
 }

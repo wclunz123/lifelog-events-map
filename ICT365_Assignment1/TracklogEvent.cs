@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 
 namespace ICT365_Assignment1
 {
+    [Serializable]
     [XmlRoot(Namespace = "http://www.xyz.org/lifelogevents", ElementName = "tracklog", DataType = "string", IsNullable = true)]
     public class TracklogEvent : Event
     {
@@ -45,6 +46,14 @@ namespace ICT365_Assignment1
             this.Data = "";
             this.StartTime = "";
             this.EndTime = "";
+        }
+
+        public TracklogEvent(string eventID, string path, string data, string startTime, string endTime) : base(eventID)
+        {
+            this.Path = path;
+            this.Data = data;
+            this.StartTime = startTime;
+            this.EndTime = endTime;
         }
     }
 }
