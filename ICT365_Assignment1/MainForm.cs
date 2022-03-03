@@ -119,7 +119,7 @@ namespace ICT365_Assignment1
 
         private void gMapControl_OnMarkerClick(GMapMarker item, MouseEventArgs e)
         {
-            MessageBox.Show(item.Tag.ToString());
+            //MessageBox.Show(item.Tag.ToString());
             selectedEvent = (Event)item.Tag;
             if (selectedEvent == null)
             {
@@ -134,8 +134,15 @@ namespace ICT365_Assignment1
 
         private void addEventButton_Click(object sender, EventArgs e)
         {
-            AddEventForm addEventForm = new AddEventForm();
-            addEventForm.ShowDialog();
+            if (selectedLocation == null)
+            {
+                MessageBox.Show("Please select the location before adding an event.");
+            }
+            else
+            {
+                AddEventForm addEventForm = new AddEventForm(selectedLocation);
+                addEventForm.ShowDialog();
+            }
         }
 
         private void retrieveEventButton_Click(object sender, EventArgs e)
@@ -183,7 +190,7 @@ namespace ICT365_Assignment1
                 {
                     if (kvp.Value is FacebookEvent)
                     {
-                        Bitmap fbIcon = (Bitmap)Image.FromFile("img/facebook.png");
+                        Bitmap fbIcon = (Bitmap)Image.FromFile("img/facebook.jpg");
                         CreateMarkerWithImage(kvp.Value, fbIcon);
                     }
                     else if (kvp.Value is TwitterEvent)
