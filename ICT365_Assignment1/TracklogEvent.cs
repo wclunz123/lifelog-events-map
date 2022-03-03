@@ -39,7 +39,7 @@ namespace ICT365_Assignment1
             this.EndTime = "";
         }
 
-        public TracklogEvent(String eventID) : base(eventID)
+        public TracklogEvent(string eventID) : base(eventID)
         {
             this.Path = "";
             this.Data = "";

@@ -3,6 +3,7 @@ using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -20,8 +22,10 @@ namespace ICT365_Assignment1
 {
     public partial class MainForm : Form
     {
-        public static Location selectedLocation;
-        public static Event selectedEvent;
+        public Dictionary<string, Event> result = new Dictionary<string, Event>();
+        public Location selectedLocation;
+        public Event selectedEvent;
+        public int polylineCounter;
 
         public MainForm()
         {
@@ -30,7 +34,7 @@ namespace ICT365_Assignment1
             //MinimumSize = this.Size;
             //MaximumSize = this.Size;
 
-            Dictionary<string, Event> result = new Dictionary<string, Event>();
+            //Dictionary<string, Event> result = new Dictionary<string, Event>();
             XDocument xdocument = XDocument.Load("lifelog-events.xml");
             XNamespace nFc = "http://www.xyz.org/lifelogevents";
 
@@ -112,8 +116,14 @@ namespace ICT365_Assignment1
                 double lng = gMapControl.FromLocalToLatLng(e.X, e.Y).Lng;
                 txtLatitude.Text = lat.ToString();
                 txtLongitude.Text = lng.ToString();
-
                 selectedLocation = new Location(lat, lng);
+                PointLatLng clickedLoc = new PointLatLng(lat, lng);
+                Event nearestEvent = FindNearestMarker(result, clickedLoc);
+                selectedEvent = nearestEvent;
+
+                RemoveLastPolyline();
+                PlotPolylineToNearestMarker(nearestEvent, clickedLoc);
+                RefreshMap();
             }
         }
 
@@ -162,16 +172,6 @@ namespace ICT365_Assignment1
             
         }
 
-        private void CreateMarkerWithIcon(Event ev, GMarkerGoogleType icon)
-        {
-            PointLatLng point = new PointLatLng(ev.GetLocation().Latitude, ev.GetLocation().Longitude);
-            GMapMarker marker = new GMarkerGoogle(point, icon);
-            GMapOverlay overlay = new GMapOverlay("markers");
-            overlay.Markers.Add(marker);
-            marker.Tag = ev;
-            gMapControl.Overlays.Add(overlay);
-        }
-
         private void CreateMarkerWithImage(Event ev, Bitmap img)
         {
             PointLatLng point = new PointLatLng(ev.GetLocation().Latitude, ev.GetLocation().Longitude);
@@ -180,7 +180,9 @@ namespace ICT365_Assignment1
             overlay.Markers.Add(marker);
             marker.Tag = ev;
             gMapControl.Overlays.Add(overlay);
+
         }
+
 
         private void PlotMarkerOnMap(Dictionary<string, Event> result)
         {
@@ -190,7 +192,7 @@ namespace ICT365_Assignment1
                 {
                     if (kvp.Value is FacebookEvent)
                     {
-                        Bitmap fbIcon = (Bitmap)Image.FromFile("img/facebook.jpg");
+                        Bitmap fbIcon = (Bitmap)Image.FromFile("img/facebook.png");
                         CreateMarkerWithImage(kvp.Value, fbIcon);
                     }
                     else if (kvp.Value is TwitterEvent)
@@ -202,7 +204,7 @@ namespace ICT365_Assignment1
                     {
                         if (kvp.Value.GetPath() != null)
                         {
-                            Bitmap imageIcon = (Bitmap)Image.FromFile(kvp.Value.GetPath());
+                            Bitmap imageIcon = (Bitmap)Image.FromFile("img/photo.png");
                             CreateMarkerWithImage(kvp.Value, imageIcon);
                         }
                     }
@@ -210,16 +212,89 @@ namespace ICT365_Assignment1
                     {
                         if (kvp.Value.GetPath() != null)
                         {
-                            CreateMarkerWithIcon(kvp.Value, GMarkerGoogleType.red_pushpin);
+                            Bitmap videoIcon = (Bitmap)Image.FromFile("img/video.png");
+                            CreateMarkerWithImage(kvp.Value, videoIcon);
                         }
                     }
                     else
                     {
-                        CreateMarkerWithIcon(kvp.Value, GMarkerGoogleType.blue_pushpin);
+                        Bitmap tracklogIcon = (Bitmap)Image.FromFile("img/tracklog.png");
+                        CreateMarkerWithImage(kvp.Value, tracklogIcon);
                     }
 
                 }
             }
+        }
+        
+        private void PlotPolylineToNearestMarker(Event nearestEvent, PointLatLng clickedLoc)
+        {
+            GMapOverlay polyOverlay = new GMapOverlay("polygons");
+            List<PointLatLng> points = new List<PointLatLng>();
+            points.Add(clickedLoc);
+            points.Add(new PointLatLng(nearestEvent.GetLocation().Latitude, nearestEvent.GetLocation().Longitude));
+
+            GMapPolygon polygon = new GMapPolygon(points, "mypolygon");
+            polygon.Fill = new SolidBrush(Color.FromArgb(50, Color.Black));
+            polygon.Stroke = new Pen(Color.Black, 5);
+            polyOverlay.Polygons.Add(polygon);
+            gMapControl.Overlays.Add(polyOverlay);
+        }
+
+        private void RemoveLastPolyline()
+        {
+            var overlaySize = gMapControl.Overlays.ToList().Count;
+            if (polylineCounter > 0)
+            {
+                gMapControl.Overlays.RemoveAt(overlaySize - 1);
+            }
+            polylineCounter++;
+        }
+
+        public double GetDistance(PointLatLng p1, PointLatLng p2)
+        {
+            GMapRoute route = new GMapRoute("getDistance");
+            route.Points.Add(p1);
+            route.Points.Add(p2);
+            double distance = route.Distance;
+            route.Clear();
+            route = null;
+
+            return distance;
+        }
+
+        private Event FindNearestMarker(Dictionary<string, Event> kvp, PointLatLng clickedPoint)
+        {
+            Event nearestEvent = null;
+            var nearestDistance = Double.PositiveInfinity;
+            foreach (var item in kvp)
+            {
+                if (item.Value.GetLocation() != null)
+                {
+                    PointLatLng currPoint = new PointLatLng(item.Value.GetLocation().Latitude, item.Value.GetLocation().Longitude);
+                    var distance = GetDistance(currPoint, clickedPoint);
+
+                    if (distance < nearestDistance)
+                    {
+                        nearestDistance = distance;
+                        nearestEvent = item.Value;
+                    }
+                }
+            }
+
+            if (double.IsPositiveInfinity(nearestDistance))
+            {
+                return null;
+            }
+            else
+            {
+                return nearestEvent;
+            }
+        }
+
+        private void RefreshMap()
+        {
+            gMapControl.Zoom--;
+            gMapControl.Zoom++;
         }
     }
 }

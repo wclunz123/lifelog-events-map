@@ -36,7 +36,7 @@ namespace ICT365_Assignment1
             this.DateTime = "";
         }
 
-        public FacebookEvent(String eventID) : base(eventID)
+        public FacebookEvent(string eventID) : base(eventID)
         {
             this.Text = "";
             this.Location = new Location();

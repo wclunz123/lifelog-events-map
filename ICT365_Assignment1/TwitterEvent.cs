@@ -18,7 +18,7 @@ namespace ICT365_Assignment1
         public Location Location { get; set; }
 
         [XmlElement("datetimestamp", Namespace = "http://www.xyz.org/lifelogevents")]
-        public String DateTime { get; set; }
+        public string DateTime { get; set; }
 
         public override Location GetLocation()
         {
@@ -36,7 +36,7 @@ namespace ICT365_Assignment1
             this.DateTime = "";
         }
 
-        public TwitterEvent(String eventID) : base(eventID)
+        public TwitterEvent(string eventID) : base(eventID)
         {
             this.Text = "";
             this.Location = new Location();

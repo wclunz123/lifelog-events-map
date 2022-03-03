@@ -32,7 +32,7 @@ namespace ICT365_Assignment1
             this.Location = new Location();
         }
 
-        public PhotoEvent(String eventID) : base(eventID)
+        public PhotoEvent(string eventID) : base(eventID)
         {
             this.Path = "";
             this.Location = new Location();

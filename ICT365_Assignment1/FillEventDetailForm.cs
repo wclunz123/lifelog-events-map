@@ -58,6 +58,18 @@ namespace ICT365_Assignment1
                 textBox1.Dispose();
                 uploadFileButton.Show();
                 uploadFileButton.Text = "Upload Photo (.png .jpg .jpeg)";
+                uploadFileButton.Click += (sender, e) =>
+                {
+                    OpenFileDialog file = new OpenFileDialog();
+                    file.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+                    file.Title = "Select an image: ";
+                    if (file.ShowDialog() == DialogResult.OK)
+                    {
+                        var filePath = file.FileName;
+                        uploadFileButton.Text = filePath.ToString();
+                    }
+                };
+
                 label2.Text = "Location";
                 textBox2.Text = SelectedLocation.Latitude + ", " + SelectedLocation.Longitude;
                 textBox2.Enabled = false;
@@ -74,6 +86,25 @@ namespace ICT365_Assignment1
                 textBox1.Dispose();
                 uploadFileButton.Text = "Upload Video (.mp4)";
                 uploadFileButton.Show();
+                uploadFileButton.Click += (sender, e) =>
+                {
+                    try
+                    {
+                        OpenFileDialog file = new OpenFileDialog();
+                        file.Filter = "Media Files|*.mpg;*.avi;*.wma;*.mov;*.wav;*.mp2;*.mp3|All Files|*.*";
+                        file.Title = "Select a video: ";
+                        if (file.ShowDialog() == DialogResult.OK)
+                        {
+                            var filePath = file.FileName;
+                            uploadFileButton.Text = filePath.ToString();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString());
+                    }
+                };
+
                 label2.Text = "Location";
                 textBox2.Text = SelectedLocation.Latitude + ", " + SelectedLocation.Longitude;
                 textBox2.Enabled = false;
@@ -117,6 +148,8 @@ namespace ICT365_Assignment1
         private void addEventButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Added");
+
+            this.Close();
         }
     }
 }

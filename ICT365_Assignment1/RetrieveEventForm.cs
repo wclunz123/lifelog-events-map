@@ -24,7 +24,8 @@ namespace ICT365_Assignment1
                 txtEventType.Text = "Twitter";
 
                 label1.Text = "Timestamp";
-                textBox1.Text = twitterEvent.DateTime;
+                textBox1.Text = FormatDateTime(twitterEvent.DateTime);
+                filepathButton.Dispose();
 
                 label2.Text = "Location";
                 textBox2.Text = twitterEvent.GetLocation().Latitude + ", " + twitterEvent.GetLocation().Longitude;
@@ -33,7 +34,7 @@ namespace ICT365_Assignment1
                 textBox3.Text = twitterEvent.Text;
                 textBox3.WordWrap = true;
                 textBox3.AutoSize = true;
-
+                
                 label5.Hide();
                 textBox5.Hide();
 
@@ -45,7 +46,8 @@ namespace ICT365_Assignment1
                 txtEventType.Text = "Facebook";
 
                 label1.Text = "Timestamp";
-                textBox1.Text = facebookEvent.DateTime;
+                textBox1.Text = FormatDateTime(facebookEvent.DateTime);
+                filepathButton.Dispose();
 
                 label2.Text = "Location";
                 textBox2.Text = facebookEvent.GetLocation().Latitude + ", " + facebookEvent.GetLocation().Longitude;
@@ -67,11 +69,17 @@ namespace ICT365_Assignment1
                 txtEventType.Text = "Photo";
 
                 label1.Text = "Filepath";
-                textBox1.Text = photoEvent.Path;
+                textBox1.Dispose();
+                filepathButton.Text = photoEvent.Path.ToString();
+                filepathButton.Click += (sender, e) => {
+                    Bitmap img = new Bitmap(photoEvent.Path);
+                    DisplayPhotoForm displayPhotoForm = new DisplayPhotoForm(img);
+                    displayPhotoForm.ShowDialog();
+                    this.Close();
+                };
 
                 label2.Text = "Location";
                 textBox2.Text = photoEvent.GetLocation().Latitude + ", " + photoEvent.GetLocation().Longitude;
-                textBox2.Click += new System.EventHandler(this.textBox2_Click);
 
                 label5.Hide();
                 textBox5.Hide();
@@ -87,16 +95,18 @@ namespace ICT365_Assignment1
                 txtEventType.Text = "Video";
 
                 label1.Text = "Filepath";
-                textBox1.Text = videoEvent.Path;
+                textBox1.Dispose();
+                filepathButton.Text = videoEvent.Path.ToString();
 
                 label2.Text = "Location";
                 textBox2.Text = videoEvent.GetLocation().Latitude + ", " + videoEvent.GetLocation().Longitude;
 
                 label3.Text = "Start Time";
-                textBox3.Text = videoEvent.StartTime;
+                textBox3.Text = FormatDateTime(videoEvent.StartTime);
 
                 label4.Text = "End Time";
-                textBox4.Text = videoEvent.EndTime;
+                textBox4.Text = videoEvent.EndTime.ToString();
+                //textBox4.Text = FormatDateTime(videoEvent.EndTime);
 
                 textBox5.Text = "N/A";
             }
@@ -105,16 +115,17 @@ namespace ICT365_Assignment1
                 txtEventType.Text = "Tracklog";
 
                 label1.Text = "Filepath";
-                textBox1.Text = tracklogEvent.Path;
+                textBox1.Dispose();
+                filepathButton.Text = tracklogEvent.Path.ToString();
 
                 label2.Text = "Data";
                 textBox2.Text = tracklogEvent.Data;
 
                 label3.Text = "Start Time";
-                textBox3.Text = tracklogEvent.StartTime;
+                textBox3.Text = FormatDateTime(tracklogEvent.StartTime);
 
                 label4.Text = "End Time";
-                textBox4.Text = tracklogEvent.EndTime;
+                textBox4.Text = FormatDateTime(tracklogEvent.EndTime);
 
                 textBox5.Text = "N/A";
             }
@@ -128,6 +139,18 @@ namespace ICT365_Assignment1
         private void textBox2_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Hi");
+        }
+
+        private void filepathButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private string FormatDateTime(string val)
+        {
+            string format = "yyyyMMddHHmmss";
+            DateTime dt = DateTime.ParseExact(val, format, null);
+            return dt.ToString();
         }
     }
 }

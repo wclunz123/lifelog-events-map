@@ -9,7 +9,7 @@
 					<lle:lat>1.443817</lle:lat>
 					<lle:long>103.714221</lle:long>
 				</lle:location>
-				<lle:datetimestamp>20220301101059125</lle:datetimestamp>
+				<lle:datetimestamp>20220301101059</lle:datetimestamp>
 			</lle:tweet>
 		</lle:Event>
 		
@@ -21,14 +21,14 @@
 					<lle:lat>1.256243</lle:lat>
 					<lle:long>103.671821</lle:long>
 				</lle:location>
-				<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+				<lle:datetimestamp>20220301185159</lle:datetimestamp>
 			</lle:facebook-status-update>
 		</lle:Event>
 		
 		<lle:Event>
 			<lle:eventid>EV202203011012</lle:eventid>
 			<lle:photo>
-				<lle:filepath>img/profile.png</lle:filepath>
+				<lle:filepath>img/profile.jpg</lle:filepath>
 				<lle:location>
 					<lle:lat>1.347929</lle:lat>
 					<lle:long>103.637025</lle:long>
@@ -44,10 +44,10 @@
 					<lle:long>103.774011</lle:long>
 				</lle:location>
 				<lle:start-time>
-					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+					<lle:datetimestamp>20220301185159</lle:datetimestamp>
 				</lle:start-time>
 				<lle:end-time>
-					<lle:datetimestamp>20220301205559396</lle:datetimestamp>
+					<lle:datetimestamp>20220301205559</lle:datetimestamp>
 				</lle:end-time>
 			</lle:video>
 		</lle:Event>
@@ -59,10 +59,10 @@
 					Track log data here...
 				</lle:data>
 				<lle:start-time>
-					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+					<lle:datetimestamp>20220301185159</lle:datetimestamp>
 				</lle:start-time>
 				<lle:end-time>
-					<lle:datetimestamp>20220301205559396</lle:datetimestamp>
+					<lle:datetimestamp>20220301205559</lle:datetimestamp>
 				</lle:end-time>
 			</lle:tracklog>
 		</lle:Event>
@@ -74,7 +74,7 @@
 					<lle:lat>1.421722</lle:lat>
 					<lle:long>103.879754</lle:long>
 				</lle:location>
-				<lle:datetimestamp>20220301101059125</lle:datetimestamp>
+				<lle:datetimestamp>20220301101059</lle:datetimestamp>
 			</lle:tweet>
 		</lle:Event>
 
@@ -86,14 +86,14 @@
 					<lle:lat>1.409023</lle:lat>
 					<lle:long>103.679940</lle:long>
 				</lle:location>
-				<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+				<lle:datetimestamp>20220301185159</lle:datetimestamp>
 			</lle:facebook-status-update>
 		</lle:Event>
 
 		<lle:Event>
 			<lle:eventid>EV202203011017</lle:eventid>
 			<lle:photo>
-				<lle:filepath>img/profile.png</lle:filepath>
+				<lle:filepath>img/profile.jpg</lle:filepath>
 				<lle:location>
 					<lle:lat>1.333171</lle:lat>
 					<lle:long>103.873917</lle:long>
@@ -109,10 +109,10 @@
 					<lle:long>103.886620</lle:long>
 				</lle:location>
 				<lle:start-time>
-					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+					<lle:datetimestamp>20220301185159</lle:datetimestamp>
 				</lle:start-time>
 				<lle:end-time>
-					<lle:datetimestamp>20220301205159125</lle:datetimestamp>
+					<lle:datetimestamp>20220301205159</lle:datetimestamp>
 				</lle:end-time>
 			</lle:video>
 		</lle:Event>
@@ -124,10 +124,10 @@
 					Track log data here...
 				</lle:data>
 				<lle:start-time>
-					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+					<lle:datetimestamp>20220301185159</lle:datetimestamp>
 				</lle:start-time>
 				<lle:end-time>
-					<lle:datetimestamp>20220301205159125</lle:datetimestamp>
+					<lle:datetimestamp>20220301205159</lle:datetimestamp>
 				</lle:end-time>
 			</lle:tracklog>
 		</lle:Event>
@@ -139,7 +139,7 @@
 					<lle:lat>1.343124</lle:lat>
 					<lle:long>104.006783</lle:long>
 				</lle:location>
-				<lle:datetimestamp>20220301101059125</lle:datetimestamp>
+				<lle:datetimestamp>20220301101059</lle:datetimestamp>
 			</lle:tweet>
 		</lle:Event>
 
@@ -151,14 +151,14 @@
 					<lle:lat>1.461192</lle:lat>
 					<lle:long>103.904130</lle:long>
 				</lle:location>
-				<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+				<lle:datetimestamp>20220301185159</lle:datetimestamp>
 			</lle:facebook-status-update>
 		</lle:Event>
 
 		<lle:Event>
 			<lle:eventid>EV202203011022</lle:eventid>
 			<lle:photo>
-				<lle:filepath>img/profile.png</lle:filepath>
+				<lle:filepath>img/profile.jpg</lle:filepath>
 				<lle:location>
 					<lle:lat>1.349646</lle:lat>
 					<lle:long>103.766114</lle:long>
@@ -174,10 +174,10 @@
 					<lle:long>103.833749</lle:long>
 				</lle:location>
 				<lle:start-time>
-					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+					<lle:datetimestamp>20220301185159</lle:datetimestamp>
 				</lle:start-time>
 				<lle:end-time>
-					<lle:datetimestamp>20220301205159125</lle:datetimestamp>
+					<lle:datetimestamp>20220301205159</lle:datetimestamp>
 				</lle:end-time>
 			</lle:video>
 		</lle:Event>
@@ -189,10 +189,10 @@
 					Track log data here...
 				</lle:data>
 				<lle:start-time>
-					<lle:datetimestamp>20220301185159125</lle:datetimestamp>
+					<lle:datetimestamp>20220301185159</lle:datetimestamp>
 				</lle:start-time>
 				<lle:end-time>
-					<lle:datetimestamp>20220301205159125</lle:datetimestamp>
+					<lle:datetimestamp>20220301205159</lle:datetimestamp>
 				</lle:end-time>
 			</lle:tracklog>
 		</lle:Event>
