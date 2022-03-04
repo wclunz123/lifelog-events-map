@@ -18,42 +18,63 @@ namespace ICT365_Assignment1
         public string Data { get; set; }
 
         [XmlElement("start-time", Namespace = "http://www.xyz.org/lifelogevents")]
-        public string StartTime { get; set; }
+        public string StartTimeString { get; set; }
 
         [XmlElement("end-time", Namespace = "http://www.xyz.org/lifelogevents")]
-        public string EndTime { get; set; }
+        public string EndTimeString { get; set; }
 
-        public override Location GetLocation()
+        public DateTime StartDateTime
         {
-            return null;
+            get
+            {
+                return ConvertDateTime(this.StartTimeString);
+            }
         }
-        public override string GetPath()
+
+        public DateTime EndDateTime
         {
-            return this.Path;
+            get
+            {
+                return ConvertDateTime(this.EndTimeString);
+            }
         }
+
+        public EventFactory.EventType EventType = EventFactory.EventType.Tracklog;
+
 
         public TracklogEvent() : base()
         {
             this.Path = "";
             this.Data = "";
-            this.StartTime = "";
-            this.EndTime = "";
+            this.StartTimeString = "";
+            this.EndTimeString = "";
         }
 
         public TracklogEvent(string eventID) : base(eventID)
         {
             this.Path = "";
             this.Data = "";
-            this.StartTime = "";
-            this.EndTime = "";
+            this.StartTimeString = "";
+            this.EndTimeString = "";
         }
 
         public TracklogEvent(string eventID, string path, string data, string startTime, string endTime) : base(eventID)
         {
             this.Path = path;
             this.Data = data;
-            this.StartTime = startTime;
-            this.EndTime = endTime;
+            this.StartTimeString = startTime;
+            this.EndTimeString = endTime;
+        }
+
+        public override Location GetLocation()
+        {
+            return null;
+        }
+
+        private DateTime ConvertDateTime(string val)
+        {
+            string format = "yyyyMMddHHmmss";
+            return DateTime.ParseExact(val, format, null);
         }
     }
 }

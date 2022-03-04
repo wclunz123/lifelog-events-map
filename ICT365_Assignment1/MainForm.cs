@@ -30,13 +30,16 @@ namespace ICT365_Assignment1
         public MainForm()
         {
             InitializeComponent();
-            //WindowState = FormWindowState.Maximized;
-            //MinimumSize = this.Size;
-            //MaximumSize = this.Size;
+            WindowState = FormWindowState.Maximized;
+            MinimumSize = this.Size;
+            MaximumSize = this.Size;
+        }
 
-            //Dictionary<string, Event> result = new Dictionary<string, Event>();
+        private void MainForm_Load(object sender, EventArgs e)
+        {
             XDocument xdocument = XDocument.Load(@"lifelog-events.xml");
             XNamespace nFc = "http://www.xyz.org/lifelogevents";
+            string nFcString = "http://www.xyz.org/lifelogevents";
 
             IEnumerable<XElement> xElements = xdocument.Descendants(nFc + "Event");
             foreach (XElement ex in xElements)
@@ -44,57 +47,44 @@ namespace ICT365_Assignment1
                 var eventId = ex.Element(nFc + "eventid").Value;
                 IEnumerable<XElement> eventTypes = from itemType in ex.Elements(nFc + "eventid").FirstOrDefault().ElementsAfterSelf()
                                                    select itemType;
-                foreach (XElement eventType in eventTypes)
+                foreach (XElement eventTypeXML in eventTypes)
                 {
-                    var tweetXName = ex.Element(XName.Get("tweet", "http://www.xyz.org/lifelogevents"));
-                    var fbXName = ex.Element(XName.Get("facebook-status-update", "http://www.xyz.org/lifelogevents"));
-                    var photoXName = ex.Element(XName.Get("photo", "http://www.xyz.org/lifelogevents"));
-                    var videoXName = ex.Element(XName.Get("video", "http://www.xyz.org/lifelogevents"));
-                    var tracklogXName = ex.Element(XName.Get("tracklog", "http://www.xyz.org/lifelogevents"));
-
+                    var tweetXName = ex.Element(XName.Get("tweet", nFcString));
+                    var fbXName = ex.Element(XName.Get("facebook-status-update", nFcString));
+                    var photoXName = ex.Element(XName.Get("photo", nFcString));
+                    var videoXName = ex.Element(XName.Get("video", nFcString));
+                    var tracklogXName = ex.Element(XName.Get("tracklog", nFcString));
+                    
+                    EventFactory.EventType currEventType;
                     if (tweetXName != null)
                     {
-                        var twSerial = new XmlSerializer(typeof(TwitterEvent));
-                        Event twitterEvent = twSerial.Deserialize(eventType.CreateReader()) as Event;
-                        twitterEvent.EventID = eventId.ToString();
-                        result.Add(eventId, twitterEvent);
+                        currEventType = EventFactory.EventType.Twitter;
                     }
                     else if (fbXName != null)
                     {
-                        var fbSerial = new XmlSerializer(typeof(FacebookEvent));
-                        Event fbEvent = fbSerial.Deserialize(eventType.CreateReader()) as Event;
-                        fbEvent.EventID = eventId.ToString();
-                        result.Add(eventId, fbEvent);
+                        currEventType = EventFactory.EventType.Facebook;
                     }
                     else if (photoXName != null)
                     {
-                        var photoSerial = new XmlSerializer(typeof(PhotoEvent));
-                        Event photoEvent = photoSerial.Deserialize(eventType.CreateReader()) as Event;
-                        photoEvent.EventID = eventId.ToString();
-                        result.Add(eventId, photoEvent);
+                        currEventType = EventFactory.EventType.Photo;
                     }
-                    else if (videoXName != null)   
+                    else if (videoXName != null)
                     {
-                        var videoSerial = new XmlSerializer(typeof(VideoEvent));
-                        Event videoEvent = videoSerial.Deserialize(eventType.CreateReader()) as Event;
-                        videoEvent.EventID = eventId.ToString();
-                        result.Add(eventId, videoEvent);
+                        currEventType = EventFactory.EventType.Video;
                     }
                     else
                     {
-                        var tracklogSerial = new XmlSerializer(typeof(TracklogEvent));
-                        Event tracklogEvent = tracklogSerial.Deserialize(eventType.CreateReader()) as Event;
-                        tracklogEvent.EventID = eventId.ToString();
-                        result.Add(eventId, tracklogEvent);
+                        currEventType = EventFactory.EventType.Tracklog;
                     }
+
+                    var serializer = new XmlSerializer(EventFactory.GetEvent(currEventType).GetType());
+                    Event currEvent = serializer.Deserialize(eventTypeXML.CreateReader()) as Event;
+                    currEvent.EventID = eventId.ToString();
+                    result.Add(eventId, currEvent);
                 }
             }
             PlotMarkerOnMap(result);
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            
+            RefreshMap();
         }
 
         private void gMapControl_Load(object sender, EventArgs e)
@@ -117,6 +107,7 @@ namespace ICT365_Assignment1
                 txtLatitude.Text = lat.ToString();
                 txtLongitude.Text = lng.ToString();
                 selectedLocation = new Location(lat, lng);
+
                 PointLatLng clickedLoc = new PointLatLng(lat, lng);
                 Event nearestEvent = FindNearestMarker(result, clickedLoc);
                 selectedEvent = nearestEvent;
@@ -157,7 +148,6 @@ namespace ICT365_Assignment1
 
         private void retrieveEventButton_Click(object sender, EventArgs e)
         {
-
             // Find nearest event
             if (selectedEvent == null)
             {
@@ -168,8 +158,45 @@ namespace ICT365_Assignment1
                 RetrieveEventForm retrieveEventForm = new RetrieveEventForm(selectedEvent);
                 retrieveEventForm.ShowDialog();
             }
+        }
 
-            
+        private void PlotMarkerOnMap(Dictionary<string, Event> result)
+        {
+            try
+            {
+                foreach (KeyValuePair<string, Event> kvp in result)
+                {
+                    if (kvp.Value is FacebookEvent)
+                    {
+                        Bitmap fbIcon = (Bitmap)Image.FromFile("img/facebook.png");
+                        CreateMarkerWithImage((FacebookEvent)kvp.Value, fbIcon);
+                    }
+                    else if (kvp.Value is TwitterEvent)
+                    {
+                        Bitmap twitterIcon = (Bitmap)Image.FromFile("img/twitter.png");
+                        CreateMarkerWithImage((TwitterEvent)kvp.Value, twitterIcon);
+                    }
+                    else if (kvp.Value is PhotoEvent)
+                    {
+                        Bitmap imageIcon = (Bitmap)Image.FromFile("img/photo.png");
+                        CreateMarkerWithImage((PhotoEvent)kvp.Value, imageIcon);
+                    }
+                    else if (kvp.Value is VideoEvent)
+                    {
+                            Bitmap videoIcon = (Bitmap)Image.FromFile("img/video.png");
+                            CreateMarkerWithImage((VideoEvent)kvp.Value, videoIcon);
+                    }
+                    else
+                    {
+                        //Bitmap tracklogIcon = (Bitmap)Image.FromFile("img/tracklog.png");
+                        //CreateMarkerWithImage(kvp.Value, tracklogIcon);
+                    }
+                }
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to locate file exception: " + ex.Message.ToString());
+            }
         }
 
         private void CreateMarkerWithImage(Event ev, Bitmap img)
@@ -180,52 +207,8 @@ namespace ICT365_Assignment1
             overlay.Markers.Add(marker);
             marker.Tag = ev;
             gMapControl.Overlays.Add(overlay);
-
         }
 
-
-        private void PlotMarkerOnMap(Dictionary<string, Event> result)
-        {
-            foreach (KeyValuePair<string, Event> kvp in result)
-            {
-                if (kvp.Value.GetLocation() != null)
-                {
-                    if (kvp.Value is FacebookEvent)
-                    {
-                        Bitmap fbIcon = (Bitmap)Image.FromFile("img/facebook.png");
-                        CreateMarkerWithImage(kvp.Value, fbIcon);
-                    }
-                    else if (kvp.Value is TwitterEvent)
-                    {
-                        Bitmap twitterIcon = (Bitmap)Image.FromFile("img/twitter.png");
-                        CreateMarkerWithImage(kvp.Value, twitterIcon);
-                    }
-                    else if (kvp.Value is PhotoEvent)
-                    {
-                        if (kvp.Value.GetPath() != null)
-                        {
-                            Bitmap imageIcon = (Bitmap)Image.FromFile("img/photo.png");
-                            CreateMarkerWithImage(kvp.Value, imageIcon);
-                        }
-                    }
-                    else if (kvp.Value is VideoEvent)
-                    {
-                        if (kvp.Value.GetPath() != null)
-                        {
-                            Bitmap videoIcon = (Bitmap)Image.FromFile("img/video.png");
-                            CreateMarkerWithImage(kvp.Value, videoIcon);
-                        }
-                    }
-                    else
-                    {
-                        Bitmap tracklogIcon = (Bitmap)Image.FromFile("img/tracklog.png");
-                        CreateMarkerWithImage(kvp.Value, tracklogIcon);
-                    }
-
-                }
-            }
-        }
-        
         private void PlotPolylineToNearestMarker(Event nearestEvent, PointLatLng clickedLoc)
         {
             GMapOverlay polyOverlay = new GMapOverlay("polygons");

@@ -17,15 +17,8 @@ namespace ICT365_Assignment1
         [XmlElement("location", Namespace = "http://www.xyz.org/lifelogevents")]
         public Location Location { get; set; }
 
-        public override Location GetLocation()
-        {
-            return this.Location;
-        }
 
-        public override string GetPath()
-        {
-            return this.Path;
-        }
+        public EventFactory.EventType EventType = EventFactory.EventType.Photo;
 
         public PhotoEvent() : base()
         {
@@ -43,6 +36,11 @@ namespace ICT365_Assignment1
         {
             this.Path = path;
             this.Location = loc;
+        }
+
+        public override Location GetLocation()
+        {
+            return this.Location;
         }
     }
 }

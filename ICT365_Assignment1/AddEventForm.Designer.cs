@@ -54,10 +54,9 @@
             this.radioButton1.Location = new System.Drawing.Point(36, 62);
             this.radioButton1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(105, 24);
+            this.radioButton1.Size = new System.Drawing.Size(32, 30);
             this.radioButton1.TabIndex = 1;
             this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Facebook";
             this.radioButton1.UseVisualStyleBackColor = true;
             this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
@@ -67,10 +66,9 @@
             this.radioButton2.Location = new System.Drawing.Point(36, 105);
             this.radioButton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(81, 24);
+            this.radioButton2.Size = new System.Drawing.Size(32, 30);
             this.radioButton2.TabIndex = 2;
             this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Twitter";
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             // 
@@ -80,10 +78,9 @@
             this.radioButton3.Location = new System.Drawing.Point(36, 149);
             this.radioButton3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(76, 24);
+            this.radioButton3.Size = new System.Drawing.Size(32, 30);
             this.radioButton3.TabIndex = 3;
             this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "Photo";
             this.radioButton3.UseVisualStyleBackColor = true;
             this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
             // 
@@ -93,10 +90,9 @@
             this.radioButton4.Location = new System.Drawing.Point(36, 192);
             this.radioButton4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(75, 24);
+            this.radioButton4.Size = new System.Drawing.Size(32, 30);
             this.radioButton4.TabIndex = 4;
             this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "Video";
             this.radioButton4.UseVisualStyleBackColor = true;
             this.radioButton4.CheckedChanged += new System.EventHandler(this.radioButton4_CheckedChanged);
             // 
@@ -128,10 +124,9 @@
             this.radioButton5.Location = new System.Drawing.Point(36, 233);
             this.radioButton5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(94, 24);
+            this.radioButton5.Size = new System.Drawing.Size(32, 30);
             this.radioButton5.TabIndex = 7;
             this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "Tracklog";
             this.radioButton5.UseVisualStyleBackColor = true;
             this.radioButton5.CheckedChanged += new System.EventHandler(this.radioButton5_CheckedChanged);
             // 
@@ -151,8 +146,10 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "AddEventForm";
             this.Text = "Add New Event";
+            this.Load += new System.EventHandler(this.AddEventForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

@@ -28,7 +28,7 @@
 		<lle:Event>
 			<lle:eventid>EV202203011012</lle:eventid>
 			<lle:photo>
-				<lle:filepath>img/profile.jpg</lle:filepath>
+				<lle:filepath>img/portrait.jfif</lle:filepath>
 				<lle:location>
 					<lle:lat>1.347929</lle:lat>
 					<lle:long>103.637025</lle:long>
@@ -38,7 +38,7 @@
 		<lle:Event>
 			<lle:eventid>EV202203011013</lle:eventid>
 			<lle:video>
-				<lle:filepath>/videos/film.mp4</lle:filepath>
+				<lle:filepath>videos/film.mp4</lle:filepath>
 				<lle:location>
 					<lle:lat>1.400786</lle:lat>
 					<lle:long>103.774011</lle:long>
@@ -93,7 +93,7 @@
 		<lle:Event>
 			<lle:eventid>EV202203011017</lle:eventid>
 			<lle:photo>
-				<lle:filepath>img/profile.jpg</lle:filepath>
+				<lle:filepath>img/portrait.jfif</lle:filepath>
 				<lle:location>
 					<lle:lat>1.333171</lle:lat>
 					<lle:long>103.873917</lle:long>
@@ -103,7 +103,7 @@
 		<lle:Event>
 			<lle:eventid>EV202203011018</lle:eventid>
 			<lle:video>
-				<lle:filepath>/videos/film.mp4</lle:filepath>
+				<lle:filepath>videos/film.mp4</lle:filepath>
 				<lle:location>
 					<lle:lat>1.394265</lle:lat>
 					<lle:long>103.886620</lle:long>
@@ -158,7 +158,7 @@
 		<lle:Event>
 			<lle:eventid>EV202203011022</lle:eventid>
 			<lle:photo>
-				<lle:filepath>img/profile.jpg</lle:filepath>
+				<lle:filepath>img/portrait.jfif</lle:filepath>
 				<lle:location>
 					<lle:lat>1.349646</lle:lat>
 					<lle:long>103.766114</lle:long>
@@ -168,7 +168,7 @@
 		<lle:Event>
 			<lle:eventid>EV202203011023</lle:eventid>
 			<lle:video>
-				<lle:filepath>/videos/film.mp4</lle:filepath>
+				<lle:filepath>videos/film.mp4</lle:filepath>
 				<lle:location>
 					<lle:lat>1.244616</lle:lat>
 					<lle:long>103.833749</lle:long>

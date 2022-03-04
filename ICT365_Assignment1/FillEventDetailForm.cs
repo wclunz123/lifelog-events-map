@@ -16,35 +16,24 @@ namespace ICT365_Assignment1
 {
     public partial class FillEventDetailForm : Form
     {
+        public EventFactory.EventType EventType;
         public Location SelectedLocation;
-        public FillEventDetailForm(string EventString, Location SelectedLocation)
+        public FillEventDetailForm(EventFactory.EventType EventType, Location SelectedLocation)
         {
             InitializeComponent();
-
             txtEventId.Text = "ID1234";
             this.SelectedLocation = SelectedLocation;
-            txtEventType.Text = EventString;
+            this.EventType = EventType;
+        }
 
+        private void FillEventDetailForm_Load(object sender, EventArgs e)
+        {
+            txtEventType.Text = EventType.ToString();
             dateTimePicker1.Hide();
             dateTimePicker2.Hide();
             uploadFileButton.Hide();
 
-            if (EventString == "Twitter")
-            {
-                label1.Text = "Text";
-                label2.Text = "Location";
-                textBox2.Text = SelectedLocation.Latitude + ", " + SelectedLocation.Longitude;
-                textBox2.Enabled = false;
-                label3.Text = "Timestamp";
-                textBox3.Dispose();
-                dateTimePicker1.Show();
-
-                label4.Hide();
-                textBox4.Hide();
-
-
-            }
-            else if (EventString == "Facebook")
+            if (EventType == EventFactory.EventType.Twitter)
             {
                 label1.Text = "Text";
                 label2.Text = "Location";
@@ -57,14 +46,27 @@ namespace ICT365_Assignment1
                 label4.Hide();
                 textBox4.Hide();
             }
-            else if (EventString == "Photo")
+            else if (EventType == EventFactory.EventType.Facebook)
+            {
+                label1.Text = "Text";
+                label2.Text = "Location";
+                textBox2.Text = SelectedLocation.Latitude + ", " + SelectedLocation.Longitude;
+                textBox2.Enabled = false;
+                label3.Text = "Timestamp";
+                textBox3.Dispose();
+                dateTimePicker1.Show();
+
+                label4.Hide();
+                textBox4.Hide();
+            }
+            else if (EventType == EventFactory.EventType.Photo)
             {
 
                 label1.Text = "Filepath";
                 textBox1.Hide();
                 uploadFileButton.Show();
                 uploadFileButton.Text = "Upload Photo (.png .jpg .jpeg)";
-                uploadFileButton.Click += (sender, e) =>
+                uploadFileButton.Click += (send, eve) =>
                 {
                     try
                     {
@@ -94,13 +96,13 @@ namespace ICT365_Assignment1
                 label4.Hide();
                 textBox4.Hide();
             }
-            else if (EventString == "Video")
+            else if (EventType == EventFactory.EventType.Video)
             {
                 label1.Text = "Filepath";
                 textBox1.Hide();
                 uploadFileButton.Text = "Upload Video (.mp4)";
                 uploadFileButton.Show();
-                uploadFileButton.Click += (sender, e) =>
+                uploadFileButton.Click += (send, eve) =>
                 {
                     try
                     {
@@ -134,13 +136,13 @@ namespace ICT365_Assignment1
                 dateTimePicker2.Show();
 
             }
-            else if (EventString == "Tracklog")
+            else if (EventType == EventFactory.EventType.Tracklog)
             {
                 label1.Text = "Filepath";
                 textBox1.Hide();
                 uploadFileButton.Text = "Upload Tracklog (.gpx)";
                 uploadFileButton.Show();
-                uploadFileButton.Click += (sender, e) =>
+                uploadFileButton.Click += (send, eve) =>
                 {
                     try
                     {
@@ -214,7 +216,7 @@ namespace ICT365_Assignment1
 
             MessageBox.Show(newEvent.ToString());
 
-            
+
             XmlSerializerNamespaces xmlNameSpace = new XmlSerializerNamespaces();
             xmlNameSpace.Add("lle", "http://www.xyz.org/lifelogevents");
 
@@ -224,7 +226,7 @@ namespace ICT365_Assignment1
             // Create a FileStream to write with.
             Stream writer = new FileStream("lifelog-events.xml", FileMode.Append);
 
-            childSerializer.Serialize(writer, newEvent, xmlNameSpace);
+            //childSerializer.Serialize(writer, newEvent, xmlNameSpace);
             // Serialize the object, and close the TextWriter
             serializer.Serialize(writer, newEvent, xmlNameSpace);
             writer.Close();

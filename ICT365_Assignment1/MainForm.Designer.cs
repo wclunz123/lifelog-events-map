@@ -160,6 +160,7 @@ namespace ICT365_Assignment1
             this.Controls.Add(this.addEventButton);
             this.Controls.Add(this.gMapControl);
             this.Controls.Add(this.splitter2);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Name = "MainForm";
             this.Text = "ICT365_Assignment1";
             this.ResumeLayout(false);

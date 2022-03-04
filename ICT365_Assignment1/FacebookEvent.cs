@@ -18,37 +18,41 @@ namespace ICT365_Assignment1
         public Location Location { get; set; }
 
         [XmlElement("datetimestamp", Namespace = "http://www.xyz.org/lifelogevents")]
-        public string DateTime { get; set; }
+        public string DateTimeString { get; set; }
 
-        public override Location GetLocation()
+        public DateTime DateTime
         {
-            return this.Location;
+            get
+            {
+                return DateTime.ParseExact(this.DateTimeString, "yyyyMMddHHmmss", null);
+            }
         }
 
-        public override string GetPath()
-        {
-            return null;
-        }
+        public EventFactory.EventType EventType = EventFactory.EventType.Facebook;
 
         public FacebookEvent() : base()
         {
             this.Text = "";
             this.Location = new Location();
-            this.DateTime = "";
+            this.DateTimeString = "";
         }
 
         public FacebookEvent(string eventID) : base(eventID)
         {
             this.Text = "";
             this.Location = new Location();
-            this.DateTime = "";
+            this.DateTimeString = "";
         }
 
         public FacebookEvent(string eventID, string text, Location loc, string datetime) : base(eventID)
         {
             this.Text = text;
             this.Location = loc;
-            this.DateTime = datetime;
+            this.DateTimeString = datetime;
+        }
+        public override Location GetLocation()
+        {
+            return this.Location;
         }
     }
 }

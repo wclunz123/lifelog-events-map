@@ -18,41 +18,62 @@ namespace ICT365_Assignment1
         public Location Location { get; set; }
 
         [XmlElement(ElementName = "start-time", DataType = "string", Namespace = "http://www.xyz.org/lifelogevents")]
-        public string StartTime { get; set; }
+        public string StartTimeString { get; set; }
 
-        [XmlElement(ElementName = "end-time", DataType = "string", IsNullable = false, Namespace = "http://www.xyz.org/lifelogevents")]
-        public string EndTime { get; set; }
+        [XmlElement(ElementName = "end-time", Namespace = "http://www.xyz.org/lifelogevents")]
+        public string EndTimeString { get; set; }
 
-        public override Location GetLocation()
+        public DateTime StartDateTime
         {
-            return this.Location;
+            get
+            {
+                return ConvertDateTime(this.StartTimeString);
+            }
         }
-        public override string GetPath()
+
+        public DateTime EndDateTime
         {
-            return this.Path;
+            get
+            {
+                return ConvertDateTime(this.EndTimeString);
+            }
         }
+
+
+        public EventFactory.EventType EventType = EventFactory.EventType.Video;
 
         public VideoEvent() : base()
         {
             this.Path = "";
             this.Location = new Location();
-            this.StartTime = "";
-            this.EndTime = "";
+            this.StartTimeString = "";
+            this.EndTimeString = "20220222222222";
         }
 
         public VideoEvent(string eventID) : base(eventID)
         {
             this.Path = "";
             this.Location = new Location();
-            this.StartTime = "";
-            this.EndTime = "";
+            this.StartTimeString = "";
+            this.EndTimeString = "20220222222222";
         }
         public VideoEvent(string eventID, string path, Location loc, string startTime, string endTime) : base(eventID)
         {
             this.Path = path;
             this.Location = loc;
-            this.StartTime = startTime;
-            this.EndTime = endTime;
+            this.StartTimeString = startTime;
+            this.EndTimeString = endTime;
+        }
+
+        public override Location GetLocation()
+        {
+            return this.Location;
+        }
+
+        private DateTime ConvertDateTime(string val)
+        {
+            string format = "yyyyMMddHHmmss";
+            return DateTime.ParseExact(val, format, null);
         }
     }
 }

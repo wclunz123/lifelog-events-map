@@ -13,8 +13,8 @@ namespace ICT365_Assignment1
             Twitter, Facebook, Photo, Video, Tracklog
         }
 
-        public static Event GetEvent(EventType inputEvent) {
-
+        public static Event GetEvent(EventType inputEvent) 
+        {
             Event returnEvent;
             if (inputEvent == EventType.Twitter)
             {
@@ -36,7 +36,6 @@ namespace ICT365_Assignment1
             {
                 returnEvent = new TracklogEvent();
             }
-
             return returnEvent;
         }
     }

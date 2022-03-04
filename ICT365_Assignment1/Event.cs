@@ -21,7 +21,6 @@ namespace ICT365_Assignment1
         public string EventID { get; set; }
 
         public abstract Location GetLocation();
-        public abstract string GetPath();
         //private HashSet<string> linkedEventID = new HashSet<string>();
 
         public Event()

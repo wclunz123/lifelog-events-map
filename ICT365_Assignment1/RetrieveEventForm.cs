@@ -1,30 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ICT365_Assignment1
 {
     public partial class RetrieveEventForm : Form
     {
+        public Event currEvent;
         public RetrieveEventForm(Event ev)
         {
             InitializeComponent();
+            this.currEvent = ev;
+        }
 
-            txtEventId.Text = ev.EventID.ToString();
-
-
-            if (ev is TwitterEvent twitterEvent)
+        private void RetrieveEventForm_Load(object sender, EventArgs e)
+        {
+            txtEventId.Text = currEvent.EventID.ToString();
+            if (currEvent is TwitterEvent twitterEvent)
             {
-                txtEventType.Text = "Twitter";
+                txtEventType.Text = twitterEvent.EventType.ToString();
 
                 label1.Text = "Timestamp";
-                textBox1.Text = FormatDateTime(twitterEvent.DateTime);
+                textBox1.Text = twitterEvent.DateTime.ToString();
                 filepathButton.Dispose();
 
                 label2.Text = "Location";
@@ -34,19 +31,19 @@ namespace ICT365_Assignment1
                 textBox3.Text = twitterEvent.Text;
                 textBox3.WordWrap = true;
                 textBox3.AutoSize = true;
-                
+
                 label5.Hide();
                 textBox5.Hide();
 
                 label4.Text = "Linked Event: ";
                 textBox4.Text = "N/A";
             }
-            else if (ev is FacebookEvent facebookEvent)
+            else if (currEvent is FacebookEvent facebookEvent)
             {
-                txtEventType.Text = "Facebook";
+                txtEventType.Text = facebookEvent.EventType.ToString();
 
                 label1.Text = "Timestamp";
-                textBox1.Text = FormatDateTime(facebookEvent.DateTime);
+                textBox1.Text = facebookEvent.DateTime.ToString();
                 filepathButton.Dispose();
 
                 label2.Text = "Location";
@@ -64,18 +61,25 @@ namespace ICT365_Assignment1
                 textBox4.Text = "N/A";
 
             }
-            else if (ev is PhotoEvent photoEvent)
+            else if (currEvent is PhotoEvent photoEvent)
             {
-                txtEventType.Text = "Photo";
+                txtEventType.Text = photoEvent.EventType.ToString();
 
                 label1.Text = "Filepath";
                 textBox1.Dispose();
                 filepathButton.Text = photoEvent.Path.ToString();
-                filepathButton.Click += (sender, e) => {
-                    Bitmap img = new Bitmap(photoEvent.Path);
-                    DisplayPhotoForm displayPhotoForm = new DisplayPhotoForm(img);
-                    displayPhotoForm.ShowDialog();
-                    this.Close();
+                filepathButton.Click += (send, eve) => {
+                    try
+                    {
+                        Bitmap img = new Bitmap(photoEvent.Path);
+                        DisplayPhotoForm displayPhotoForm = new DisplayPhotoForm(img);
+                        displayPhotoForm.ShowDialog();
+                        this.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Failed to display photo: " + ex.Message.ToString());
+                    }
                 };
 
                 label2.Text = "Location";
@@ -89,30 +93,43 @@ namespace ICT365_Assignment1
 
                 label3.Text = "Linked Event: ";
                 textBox3.Text = "N/A";
+                textBox3.Height = 20;
             }
-            else if (ev is VideoEvent videoEvent)
+            else if (currEvent is VideoEvent videoEvent)
             {
-                txtEventType.Text = "Video";
+                txtEventType.Text = videoEvent.EventType.ToString();
 
                 label1.Text = "Filepath";
                 textBox1.Dispose();
                 filepathButton.Text = videoEvent.Path.ToString();
+                filepathButton.Click += (send, eve) => {
+                    try
+                    {
+                        DisplayVideoForm displayPhotoForm = new DisplayVideoForm(videoEvent.Path.ToString());
+                        displayPhotoForm.ShowDialog();
+                        this.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Failed to display video: " + ex.Message.ToString());
+                    }
+                };
 
                 label2.Text = "Location";
                 textBox2.Text = videoEvent.GetLocation().Latitude + ", " + videoEvent.GetLocation().Longitude;
 
                 label3.Text = "Start Time";
-                textBox3.Text = FormatDateTime(videoEvent.StartTime);
+                textBox3.Text = videoEvent.StartDateTime.ToString();
+                textBox3.Height = 20;
 
                 label4.Text = "End Time";
-                textBox4.Text = videoEvent.EndTime.ToString();
-                //textBox4.Text = FormatDateTime(videoEvent.EndTime);
+                textBox4.Text = videoEvent.EndDateTime.ToString();
 
                 textBox5.Text = "N/A";
             }
-            else if (ev is TracklogEvent tracklogEvent)
+            else if (currEvent is TracklogEvent tracklogEvent)
             {
-                txtEventType.Text = "Tracklog";
+                txtEventType.Text = tracklogEvent.EventType.ToString();
 
                 label1.Text = "Filepath";
                 textBox1.Dispose();
@@ -122,35 +139,14 @@ namespace ICT365_Assignment1
                 textBox2.Text = tracklogEvent.Data;
 
                 label3.Text = "Start Time";
-                textBox3.Text = FormatDateTime(tracklogEvent.StartTime);
+                textBox3.Text = tracklogEvent.StartDateTime.ToString();
+                textBox3.Height = 20;
 
                 label4.Text = "End Time";
-                textBox4.Text = FormatDateTime(tracklogEvent.EndTime);
+                textBox4.Text = tracklogEvent.EndDateTime.ToString();
 
                 textBox5.Text = "N/A";
             }
-        }
-
-        private void RetrieveEventForm_Load(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void textBox2_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Hi");
-        }
-
-        private void filepathButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private string FormatDateTime(string val)
-        {
-            string format = "yyyyMMddHHmmss";
-            DateTime dt = DateTime.ParseExact(val, format, null);
-            return dt.ToString();
         }
     }
 }
