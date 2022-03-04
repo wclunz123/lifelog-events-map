@@ -49,11 +49,26 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="AddEventFormTest.cs" />
+    <Compile Include="EventFactoryTest.cs" />
+    <Compile Include="EventTest.cs" />
+    <Compile Include="FacebookEventTest.cs" />
+    <Compile Include="FillEventDetailFormTest.cs" />
+    <Compile Include="PhotoEventTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RetrieveEventFormTest.cs" />
+    <Compile Include="TracklogEventTest.cs" />
+    <Compile Include="TwitterEventTest.cs" />
+    <Compile Include="VideoEventTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ICT365_Assignment1\ICT365_Assignment1.csproj">
+      <Project>{4C6EDB99-B7EC-4229-8B07-A7C4B1B32390}</Project>
+      <Name>ICT365_Assignment1</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

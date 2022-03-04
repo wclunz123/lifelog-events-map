@@ -3,17 +3,10 @@ using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -39,8 +32,6 @@ namespace ICT365_Assignment1
         {
             try
             {
-
-
                 XDocument xdocument = XDocument.Load(@"lifelog-events.xml");
                 XNamespace nFc = "http://www.xyz.org/lifelogevents";
                 string nFcString = "http://www.xyz.org/lifelogevents";
@@ -242,7 +233,7 @@ namespace ICT365_Assignment1
             polylineCounter++;
         }
 
-        public double GetDistance(PointLatLng p1, PointLatLng p2)
+        private double GetDistance(PointLatLng p1, PointLatLng p2)
         {
             GMapRoute route = new GMapRoute("getDistance");
             route.Points.Add(p1);
