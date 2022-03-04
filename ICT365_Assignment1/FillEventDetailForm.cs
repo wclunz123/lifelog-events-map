@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace ICT365_Assignment1
 {
     public partial class FillEventDetailForm : Form
     {
-        public EventFactory.EventType EventType;
-        public Location SelectedLocation;
+        protected EventFactory.EventType EventType;
+        protected Location SelectedLocation;
+        protected OpenFileDialog file = new OpenFileDialog();
         public FillEventDetailForm(EventFactory.EventType EventType, Location SelectedLocation)
         {
             InitializeComponent();
@@ -70,7 +61,6 @@ namespace ICT365_Assignment1
                 {
                     try
                     {
-                        OpenFileDialog file = new OpenFileDialog();
                         file.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
                         file.Title = "Select an image: ";
                         if (file.ShowDialog() == DialogResult.OK)
@@ -106,8 +96,7 @@ namespace ICT365_Assignment1
                 {
                     try
                     {
-                        OpenFileDialog file = new OpenFileDialog();
-                        file.Filter = "Media Files|*.mpg;*.avi;*.wma;*.mov;*.wav;*.mp2;*.mp3|All Files|*.*";
+                        file.Filter = "MP4 Files|*.mp4|All Files|*.*";
                         file.Title = "Select a video: ";
                         if (file.ShowDialog() == DialogResult.OK)
                         {
@@ -146,9 +135,8 @@ namespace ICT365_Assignment1
                 {
                     try
                     {
-                        OpenFileDialog file = new OpenFileDialog();
-                        file.Filter = "Media Files|*.mpg;*.avi;*.wma;*.mov;*.wav;*.mp2;*.mp3|All Files|*.*";
-                        file.Title = "Select a video: ";
+                        file.Filter = "GPX Files|*.gpx|*.*";
+                        file.Title = "Select a .gpx file: ";
                         if (file.ShowDialog() == DialogResult.OK)
                         {
                             var filePath = file.FileName;
@@ -185,51 +173,61 @@ namespace ICT365_Assignment1
 
         private void addEventButton_Click(object sender, EventArgs e)
         {
-
-            Event newEvent;
-            if (txtEventType.Text == "Twitter")
+            Event newEvent = EventFactory.GetEvent(EventType);
+            string path = Path.Combine(@"save\" + EventType.ToString().ToLower() + "\\");
+            try
             {
-                string dateTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
-                newEvent = new TwitterEvent(txtEventId.Text, textBox1.Text, SelectedLocation, dateTime);
+                if (EventType == EventFactory.EventType.Twitter)
+                {
+                    string dateTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
+                    newEvent = new TwitterEvent(txtEventId.Text, textBox1.Text, SelectedLocation, dateTime);
+                }
+                else if (EventType == EventFactory.EventType.Facebook)
+                {
+                    string dateTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
+                    newEvent = new FacebookEvent(txtEventId.Text, textBox1.Text, SelectedLocation, dateTime);
+                }
+                else if (EventType == EventFactory.EventType.Photo)
+                {
+                    newEvent = new PhotoEvent(txtEventId.Text, file.FileName, SelectedLocation);
+                }
+                else if (EventType == EventFactory.EventType.Video)
+                {
+                    string startTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
+                    string endTime = dateTimePicker2.Value.ToString("yyyyMMddHHmmss");
+                    newEvent = new VideoEvent(txtEventId.Text, file.FileName, SelectedLocation, startTime, endTime);
+                    
+                }
+                else
+                {
+                    string startTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
+                    string endTime = dateTimePicker2.Value.ToString("yyyyMMddHHmmss");
+                    newEvent = new TracklogEvent(txtEventId.Text, file.FileName, textBox2.Text, startTime, endTime);
+                }
+                SaveFile(path);
+                MessageBox.Show(newEvent.ToString());
             }
-            else if (txtEventType.Text == "Facebook")
+            catch (Exception ex)
             {
-                string dateTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
-                newEvent = new FacebookEvent(txtEventId.Text, textBox1.Text, SelectedLocation, dateTime);
-            }
-            else if (txtEventType.Text == "Photo")
-            {
-                newEvent = new PhotoEvent(txtEventId.Text, textBox1.Text, SelectedLocation);
-            }
-            else if (txtEventType.Text == "Video")
-            {
-                string startTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
-                string endTime = dateTimePicker2.Value.ToString("yyyyMMddHHmmss");
-                newEvent = new VideoEvent(txtEventId.Text, textBox1.Text, SelectedLocation, startTime, endTime);
-            }
-            else
-            {
-                string startTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
-                string endTime = dateTimePicker2.Value.ToString("yyyyMMddHHmmss");
-                newEvent = new TracklogEvent(txtEventId.Text, textBox1.Text, textBox2.Text, startTime, endTime);
+                MessageBox.Show("Failed to insert new event: " + ex.Message);
+                this.Close();
             }
 
-            MessageBox.Show(newEvent.ToString());
 
 
-            XmlSerializerNamespaces xmlNameSpace = new XmlSerializerNamespaces();
-            xmlNameSpace.Add("lle", "http://www.xyz.org/lifelogevents");
+            //XmlSerializerNamespaces xmlNameSpace = new XmlSerializerNamespaces();
+            //xmlNameSpace.Add("lle", "http://www.xyz.org/lifelogevents");
 
-            XmlSerializer serializer = new XmlSerializer(typeof(Event));
-            XmlSerializer childSerializer = new XmlSerializer(newEvent.GetType());
+            //XmlSerializer serializer = new XmlSerializer(typeof(Event));
+            //XmlSerializer childSerializer = new XmlSerializer(newEvent.GetType());
 
             // Create a FileStream to write with.
-            Stream writer = new FileStream("lifelog-events.xml", FileMode.Append);
+            //Stream writer = new FileStream("lifelog-events.xml", FileMode.Append);
 
             //childSerializer.Serialize(writer, newEvent, xmlNameSpace);
             // Serialize the object, and close the TextWriter
-            serializer.Serialize(writer, newEvent, xmlNameSpace);
-            writer.Close();
+            //serializer.Serialize(writer, newEvent, xmlNameSpace);
+            //writer.Close();
 
 
             //XmlDocument xdoc = new XmlDocument();
@@ -243,6 +241,23 @@ namespace ICT365_Assignment1
             //xdoc.Save("lifelog-events.xml");
 
             this.Close();
+        }
+
+        private void SaveFile(string path)
+        {
+            try
+            {
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                var fileName = txtEventId.Text + "_" + Path.GetFileName(file.FileName);
+                path = path + fileName;
+                File.Copy(file.FileName, path);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("You must upload a valid file: " + ex.ToString());
+            }
         }
     }
 }

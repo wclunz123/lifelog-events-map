@@ -9,6 +9,7 @@ namespace ICT365_Assignment1_Test
         [TestMethod]
         public void TestMethod1()
         {
+            
         }
     }
 }

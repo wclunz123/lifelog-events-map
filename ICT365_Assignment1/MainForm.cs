@@ -37,54 +37,63 @@ namespace ICT365_Assignment1
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            XDocument xdocument = XDocument.Load(@"lifelog-events.xml");
-            XNamespace nFc = "http://www.xyz.org/lifelogevents";
-            string nFcString = "http://www.xyz.org/lifelogevents";
-
-            IEnumerable<XElement> xElements = xdocument.Descendants(nFc + "Event");
-            foreach (XElement ex in xElements)
+            try
             {
-                var eventId = ex.Element(nFc + "eventid").Value;
-                IEnumerable<XElement> eventTypes = from itemType in ex.Elements(nFc + "eventid").FirstOrDefault().ElementsAfterSelf()
-                                                   select itemType;
-                foreach (XElement eventTypeXML in eventTypes)
-                {
-                    var tweetXName = ex.Element(XName.Get("tweet", nFcString));
-                    var fbXName = ex.Element(XName.Get("facebook-status-update", nFcString));
-                    var photoXName = ex.Element(XName.Get("photo", nFcString));
-                    var videoXName = ex.Element(XName.Get("video", nFcString));
-                    var tracklogXName = ex.Element(XName.Get("tracklog", nFcString));
-                    
-                    EventFactory.EventType currEventType;
-                    if (tweetXName != null)
-                    {
-                        currEventType = EventFactory.EventType.Twitter;
-                    }
-                    else if (fbXName != null)
-                    {
-                        currEventType = EventFactory.EventType.Facebook;
-                    }
-                    else if (photoXName != null)
-                    {
-                        currEventType = EventFactory.EventType.Photo;
-                    }
-                    else if (videoXName != null)
-                    {
-                        currEventType = EventFactory.EventType.Video;
-                    }
-                    else
-                    {
-                        currEventType = EventFactory.EventType.Tracklog;
-                    }
 
-                    var serializer = new XmlSerializer(EventFactory.GetEvent(currEventType).GetType());
-                    Event currEvent = serializer.Deserialize(eventTypeXML.CreateReader()) as Event;
-                    currEvent.EventID = eventId.ToString();
-                    result.Add(eventId, currEvent);
+
+                XDocument xdocument = XDocument.Load(@"lifelog-events.xml");
+                XNamespace nFc = "http://www.xyz.org/lifelogevents";
+                string nFcString = "http://www.xyz.org/lifelogevents";
+
+                IEnumerable<XElement> xElements = xdocument.Descendants(nFc + "Event");
+                foreach (XElement ex in xElements)
+                {
+                    var eventId = ex.Element(nFc + "eventid").Value;
+                    IEnumerable<XElement> eventTypes = from itemType in ex.Elements(nFc + "eventid").FirstOrDefault().ElementsAfterSelf()
+                                                       select itemType;
+                    foreach (XElement eventTypeXML in eventTypes)
+                    {
+                        var tweetXName = ex.Element(XName.Get("tweet", nFcString));
+                        var fbXName = ex.Element(XName.Get("facebook-status-update", nFcString));
+                        var photoXName = ex.Element(XName.Get("photo", nFcString));
+                        var videoXName = ex.Element(XName.Get("video", nFcString));
+                        var tracklogXName = ex.Element(XName.Get("tracklog", nFcString));
+
+                        EventFactory.EventType currEventType;
+                        if (tweetXName != null)
+                        {
+                            currEventType = EventFactory.EventType.Twitter;
+                        }
+                        else if (fbXName != null)
+                        {
+                            currEventType = EventFactory.EventType.Facebook;
+                        }
+                        else if (photoXName != null)
+                        {
+                            currEventType = EventFactory.EventType.Photo;
+                        }
+                        else if (videoXName != null)
+                        {
+                            currEventType = EventFactory.EventType.Video;
+                        }
+                        else
+                        {
+                            currEventType = EventFactory.EventType.Tracklog;
+                        }
+
+                        var serializer = new XmlSerializer(EventFactory.GetEvent(currEventType).GetType());
+                        Event currEvent = serializer.Deserialize(eventTypeXML.CreateReader()) as Event;
+                        currEvent.EventID = eventId.ToString();
+                        result.Add(eventId, currEvent);
+                    }
                 }
+                PlotMarkerOnMap(result);
+                RefreshMap();
             }
-            PlotMarkerOnMap(result);
-            RefreshMap();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
         }
 
         private void gMapControl_Load(object sender, EventArgs e)
