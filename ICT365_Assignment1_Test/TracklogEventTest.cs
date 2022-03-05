@@ -12,27 +12,48 @@ namespace ICT365_Assignment1.Tests
     public class TracklogEventTest
     {
         [TestMethod()]
-        public void TracklogEventTest()
+        public void TracklogEventInheritanceTest()
         {
-            Assert.Fail();
+            TracklogEvent newEvent = new TracklogEvent("ID123", "/tracklog/test.gpx", "Some data..", "20221231105922", "20230112082921");
+            Assert.IsTrue(newEvent is TracklogEvent);
         }
 
         [TestMethod()]
-        public void TracklogEventTest1()
+        public void TracklogEventStartDateTimeTest()
         {
-            Assert.Fail();
+            string StartDateTimeString = "20211015175521";
+            string DateTimeFormat = "yyyyMMddHHmmss";
+
+            TracklogEvent tracklogEvent = new TracklogEvent();
+            tracklogEvent.StartTimeString = StartDateTimeString;
+
+            DateTime CorrectStartDateTime = DateTime.ParseExact(StartDateTimeString, DateTimeFormat, null);
+            Assert.AreEqual(CorrectStartDateTime, tracklogEvent.StartDateTime);
         }
 
         [TestMethod()]
-        public void TracklogEventTest2()
+        public void TracklogEventEndDateTimeTest()
         {
-            Assert.Fail();
+            string EndDateTimeString = "20211015175521";
+            string DateTimeFormat = "yyyyMMddHHmmss";
+
+            TracklogEvent tracklogEvent = new TracklogEvent();
+            tracklogEvent.EndTimeString = EndDateTimeString;
+
+            DateTime CorrectEndDateTime = DateTime.ParseExact(EndDateTimeString, DateTimeFormat, null);
+            Assert.AreEqual(CorrectEndDateTime, tracklogEvent.EndDateTime);
         }
 
         [TestMethod()]
-        public void GetLocationTest()
+        public void TracklogEventConstructorTest()
         {
-            Assert.Fail();
+            Event newEvent = new TracklogEvent("ID123", "/tracklog/test.gpx", "Some data..", "20221231105922", "20230112082921");
+
+
+            if (newEvent is TracklogEvent tracklogEvent)
+            {
+                Assert.AreEqual("/tracklog/test.gpx", tracklogEvent.Path);
+            }
         }
     }
 }

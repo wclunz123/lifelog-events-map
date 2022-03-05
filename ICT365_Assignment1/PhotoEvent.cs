@@ -17,7 +17,6 @@ namespace ICT365_Assignment1
         [XmlElement("location", Namespace = "http://www.xyz.org/lifelogevents")]
         public Location Location { get; set; }
 
-
         public EventFactory.EventType EventType = EventFactory.EventType.Photo;
 
         public PhotoEvent() : base()

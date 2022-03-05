@@ -36,8 +36,9 @@ namespace ICT365_Assignment1
                 textBox5.Hide();
 
                 label4.Text = "Linked Event: ";
-                textBox4.Text = "N/A";
+                textBox4.Text = string.Join("", twitterEvent.LinkedEventID);
             }
+
             else if (currEvent is FacebookEvent facebookEvent)
             {
                 txtEventType.Text = facebookEvent.EventType.ToString();
@@ -58,8 +59,7 @@ namespace ICT365_Assignment1
                 textBox5.Hide();
 
                 label4.Text = "Linked Event: ";
-                textBox4.Text = "N/A";
-
+                textBox4.Text = string.Join("", facebookEvent.LinkedEventID);
             }
             else if (currEvent is PhotoEvent photoEvent)
             {
@@ -67,7 +67,7 @@ namespace ICT365_Assignment1
 
                 label1.Text = "Filepath";
                 textBox1.Dispose();
-                filepathButton.Text = photoEvent.Path.ToString();
+                filepathButton.Text = "Open Photo";
                 filepathButton.Click += (send, eve) => {
                     try
                     {
@@ -92,7 +92,7 @@ namespace ICT365_Assignment1
                 textBox4.Hide();
 
                 label3.Text = "Linked Event: ";
-                textBox3.Text = "N/A";
+                textBox3.Text = string.Join("", photoEvent.LinkedEventID);
                 textBox3.Height = 20;
             }
             else if (currEvent is VideoEvent videoEvent)
@@ -101,7 +101,7 @@ namespace ICT365_Assignment1
 
                 label1.Text = "Filepath";
                 textBox1.Dispose();
-                filepathButton.Text = videoEvent.Path.ToString();
+                filepathButton.Text = "Open Video";
                 filepathButton.Click += (send, eve) => {
                     try
                     {
@@ -125,7 +125,7 @@ namespace ICT365_Assignment1
                 label4.Text = "End Time";
                 textBox4.Text = videoEvent.EndDateTime.ToString();
 
-                textBox5.Text = "N/A";
+                textBox5.Text = string.Join("", videoEvent.LinkedEventID);
             }
             else if (currEvent is TracklogEvent tracklogEvent)
             {
@@ -133,7 +133,7 @@ namespace ICT365_Assignment1
 
                 label1.Text = "Filepath";
                 textBox1.Dispose();
-                filepathButton.Text = tracklogEvent.Path.ToString();
+                filepathButton.Text = "Open .GPX File";
 
                 label2.Text = "Data";
                 textBox2.Text = tracklogEvent.Data;
@@ -145,8 +145,9 @@ namespace ICT365_Assignment1
                 label4.Text = "End Time";
                 textBox4.Text = tracklogEvent.EndDateTime.ToString();
 
-                textBox5.Text = "N/A";
+                textBox5.Text = string.Join("", tracklogEvent.LinkedEventID);
             }
         }
+
     }
 }

@@ -12,33 +12,40 @@ namespace ICT365_Assignment1.Tests
     public class TwitterEventTest
     {
         [TestMethod()]
-        public void TwitterEventTest()
+        public void TwitterEventInheritanceTest()
         {
-            Assert.Fail();
+            Location loc = new Location(1.052251, 103.25215);
+            Event newEvent = new TwitterEvent("ID123", "Tweet birdy day.", loc, "20221231105922");
+            Assert.IsTrue(newEvent is TwitterEvent);
         }
 
         [TestMethod()]
-        public void TwitterEventTest1()
+        public void TwitterEventConstructorTest()
         {
-            Assert.Fail();
+            Location loc = new Location(1.052251, 103.25215);
+            Event newEvent = new TwitterEvent("ID123", "Tweet birdy day.", loc, "20221231105922");
+
+            if (newEvent is TwitterEvent twitterEvent)
+            {
+                Assert.AreEqual("Tweet birdy day.", twitterEvent.Text);
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
 
         [TestMethod()]
-        public void TwitterEventTest2()
+        public void TwitterEventStartDateTimeTest()
         {
-            Assert.Fail();
-        }
+            string DateTimeString = "20211015175521";
+            string DateTimeFormat = "yyyyMMddHHmmss";
 
-        [TestMethod()]
-        public void GetLocationTest()
-        {
-            Assert.Fail();
-        }
+            TwitterEvent twitterEvent = new TwitterEvent();
+            twitterEvent.DateTimeString = DateTimeString;
 
-        [TestMethod()]
-        public void ToStringTest()
-        {
-            Assert.Fail();
+            DateTime CorrectStartDateTime = DateTime.ParseExact(DateTimeString, DateTimeFormat, null);
+            Assert.AreEqual(CorrectStartDateTime, twitterEvent.DateTime);
         }
     }
 }

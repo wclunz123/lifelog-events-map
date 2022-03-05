@@ -19,9 +19,8 @@ namespace ICT365_Assignment1
     {
         [XmlElement("eventid", Namespace = "http://www.xyz.org/lifelogevents")]
         public string EventID { get; set; }
-
         public abstract Location GetLocation();
-        //private HashSet<string> linkedEventID = new HashSet<string>();
+        private HashSet<string> linkedEventID = new HashSet<string>();
 
         public Event()
         {
@@ -36,6 +35,7 @@ namespace ICT365_Assignment1
         {
             return JsonConvert.SerializeObject(this);
         }
-        //public HashSet<string> LinkedEventID { get => linkedEventID; set => linkedEventID = value; }
+
+        public HashSet<string> LinkedEventID { get => linkedEventID; set => linkedEventID = value; }
     }
 }

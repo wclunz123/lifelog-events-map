@@ -12,9 +12,48 @@ namespace ICT365_Assignment1.Tests
     public class EventFactoryTest
     {
         [TestMethod()]
-        public void GetEventTest()
+        public void GetEventTwitterEventTest()
         {
-            Assert.Fail();
+            EventFactory.EventType CurrentEventType = EventFactory.EventType.Twitter;
+
+            Event newEvent = EventFactory.GetEvent(CurrentEventType);
+            Assert.IsTrue(newEvent is TwitterEvent);
+        }
+
+        [TestMethod()]
+        public void GetEventFacebookEventTest()
+        {
+            EventFactory.EventType CurrentEventType = EventFactory.EventType.Facebook;
+
+            Event newEvent = EventFactory.GetEvent(CurrentEventType);
+            Assert.IsTrue(newEvent is FacebookEvent);
+        }
+
+        [TestMethod()]
+        public void GetEventPhotoEventTest()
+        {
+            EventFactory.EventType CurrentEventType = EventFactory.EventType.Photo;
+
+            Event newEvent = EventFactory.GetEvent(CurrentEventType);
+            Assert.IsTrue(newEvent is PhotoEvent);
+        }
+
+        [TestMethod()]
+        public void GetEventVideoEventTest()
+        {
+            EventFactory.EventType CurrentEventType = EventFactory.EventType.Video;
+
+            Event newEvent = EventFactory.GetEvent(CurrentEventType);
+            Assert.IsTrue(newEvent is VideoEvent);
+        }
+
+        [TestMethod()]
+        public void GetEventTracklogEventTest()
+        {
+            EventFactory.EventType CurrentEventType = EventFactory.EventType.Tracklog;
+
+            Event newEvent = EventFactory.GetEvent(CurrentEventType);
+            Assert.IsTrue(newEvent is TracklogEvent);
         }
     }
 }

@@ -12,6 +12,14 @@ namespace ICT365_Assignment1.Tests
     public class VideoEventTest
     {
         [TestMethod()]
+        public void VideoEventInheritanceTest()
+        {
+            Location loc = new Location(1.052251, 103.25215);
+            Event newEvent = new VideoEvent("ID123", "/img/test.png", loc, "20221231105922", "20230112082921");
+            Assert.IsTrue(newEvent is VideoEvent);
+        }
+
+        [TestMethod()]
         public void VideoEventStartDateTimeTest()
         {
             string StartDateTimeString = "20211015175521";
@@ -37,16 +45,21 @@ namespace ICT365_Assignment1.Tests
             Assert.AreEqual(CorrectEndDateTime, videoEvent.EndDateTime);
         }
 
-        //[TestMethod()]
-        //public void VideoEventDateTimeTest2()
-        //{
-        //    Assert.Fail();
-        //}
+        [TestMethod()]
+        public void VideoEventConstructorTest()
+        {
+            Location loc = new Location(1.052251, 103.25215);
+            Event newEvent = new VideoEvent("ID123", "/img/test.png", loc, "20221231105922", "20230112082921");
+            
 
-        //[TestMethod()]
-        //public void GetLocationDateTimeTest()
-        //{
-        //    Assert.Fail();
-        //}
+            if (newEvent is VideoEvent videoEvent)
+            {
+                Assert.AreEqual("/img/test.png", videoEvent.Path);
+            }
+            else
+            {
+                Assert.Fail();
+            }    
+        }
     }
 }

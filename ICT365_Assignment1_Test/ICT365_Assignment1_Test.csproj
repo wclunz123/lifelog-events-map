@@ -49,14 +49,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddEventFormTest.cs" />
     <Compile Include="EventFactoryTest.cs" />
     <Compile Include="EventTest.cs" />
     <Compile Include="FacebookEventTest.cs" />
-    <Compile Include="FillEventDetailFormTest.cs" />
     <Compile Include="PhotoEventTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RetrieveEventFormTest.cs" />
     <Compile Include="TracklogEventTest.cs" />
     <Compile Include="TwitterEventTest.cs" />
     <Compile Include="VideoEventTest.cs" />

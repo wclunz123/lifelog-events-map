@@ -14,6 +14,7 @@ namespace ICT365_Assignment1
     {
         public EventFactory.EventType SelectedEvent;
         public Location SelectedLocation;
+
         public AddEventForm(Location selectedLocationVal)
         {
             InitializeComponent();

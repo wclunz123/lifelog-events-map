@@ -15,10 +15,15 @@ namespace ICT365_Assignment1
 {
     public partial class MainForm : Form
     {
-        public Dictionary<string, Event> result = new Dictionary<string, Event>();
-        public Location selectedLocation;
-        public Event selectedEvent;
-        public int polylineCounter;
+        public static MainForm instance;
+
+        public static Dictionary<string, Event> result = new Dictionary<string, Event>();
+        
+        public static Event selectedEvent;
+
+        private Location selectedLocation;
+
+        GMapOverlay polyOverlay = new GMapOverlay("polygons");
 
         public MainForm()
         {
@@ -26,6 +31,7 @@ namespace ICT365_Assignment1
             WindowState = FormWindowState.Maximized;
             MinimumSize = this.Size;
             MaximumSize = this.Size;
+            instance = this;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -41,7 +47,7 @@ namespace ICT365_Assignment1
                 {
                     var eventId = ex.Element(nFc + "eventid").Value;
                     IEnumerable<XElement> eventTypes = from itemType in ex.Elements(nFc + "eventid").FirstOrDefault().ElementsAfterSelf()
-                                                       select itemType;
+                                                        select itemType;
                     foreach (XElement eventTypeXML in eventTypes)
                     {
                         var tweetXName = ex.Element(XName.Get("tweet", nFcString));
@@ -96,6 +102,7 @@ namespace ICT365_Assignment1
             gMapControl.MinZoom = 5;
             gMapControl.MaxZoom = 50;
             gMapControl.Zoom = 11;
+            
         }
 
         private void gMapControl_MouseClick(object sender, MouseEventArgs e)
@@ -112,7 +119,6 @@ namespace ICT365_Assignment1
                 Event nearestEvent = FindNearestMarker(result, clickedLoc);
                 selectedEvent = nearestEvent;
 
-                RemoveLastPolyline();
                 PlotPolylineToNearestMarker(nearestEvent, clickedLoc);
                 RefreshMap();
             }
@@ -120,11 +126,10 @@ namespace ICT365_Assignment1
 
         private void gMapControl_OnMarkerClick(GMapMarker item, MouseEventArgs e)
         {
-            //MessageBox.Show(item.Tag.ToString());
             selectedEvent = (Event)item.Tag;
             if (selectedEvent == null)
             {
-                MessageBox.Show("Please select an event.");
+                MessageBox.Show("Please select an event.", "Error Message");
             }
             else
             {
@@ -137,7 +142,7 @@ namespace ICT365_Assignment1
         {
             if (selectedLocation == null)
             {
-                MessageBox.Show("Please select the location before adding an event.");
+                MessageBox.Show("Please select the location before adding an event.", "Error Message");
             }
             else
             {
@@ -151,12 +156,44 @@ namespace ICT365_Assignment1
             // Find nearest event
             if (selectedEvent == null)
             {
-                MessageBox.Show("Please select an event.");
+                MessageBox.Show("Please select an event.", "Error Message");
             } 
             else
             {
                 RetrieveEventForm retrieveEventForm = new RetrieveEventForm(selectedEvent);
                 retrieveEventForm.ShowDialog();
+            }
+        }
+        public void PlotNewMarker(Event newEvent)
+        {
+            polyOverlay.Polygons.RemoveAt(0);
+            try
+            {
+                if (newEvent is FacebookEvent)
+                {
+                    Bitmap fbIcon = (Bitmap)Image.FromFile("img/facebook.png");
+                    CreateMarkerWithImage((FacebookEvent)newEvent, fbIcon);
+                }
+                else if (newEvent is TwitterEvent)
+                {
+                    Bitmap twitterIcon = (Bitmap)Image.FromFile("img/twitter.png");
+                    CreateMarkerWithImage((TwitterEvent)newEvent, twitterIcon);
+                }
+                else if (newEvent is PhotoEvent)
+                {
+                    Bitmap imageIcon = (Bitmap)Image.FromFile("img/photo.png");
+                    CreateMarkerWithImage((PhotoEvent)newEvent, imageIcon);
+                }
+                else if (newEvent is VideoEvent)
+                {
+                    Bitmap videoIcon = (Bitmap)Image.FromFile("img/video.png");
+                    CreateMarkerWithImage((VideoEvent)newEvent, videoIcon);
+                }
+                RefreshMap();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -211,7 +248,11 @@ namespace ICT365_Assignment1
 
         private void PlotPolylineToNearestMarker(Event nearestEvent, PointLatLng clickedLoc)
         {
-            GMapOverlay polyOverlay = new GMapOverlay("polygons");
+            
+            if (polyOverlay.Polygons.Count > 0)
+            {
+                polyOverlay.Polygons.RemoveAt(0);
+            }
             List<PointLatLng> points = new List<PointLatLng>();
             points.Add(clickedLoc);
             points.Add(new PointLatLng(nearestEvent.GetLocation().Latitude, nearestEvent.GetLocation().Longitude));
@@ -221,16 +262,6 @@ namespace ICT365_Assignment1
             polygon.Stroke = new Pen(Color.Black, 5);
             polyOverlay.Polygons.Add(polygon);
             gMapControl.Overlays.Add(polyOverlay);
-        }
-
-        private void RemoveLastPolyline()
-        {
-            var overlaySize = gMapControl.Overlays.ToList().Count;
-            if (polylineCounter > 0)
-            {
-                gMapControl.Overlays.RemoveAt(overlaySize - 1);
-            }
-            polylineCounter++;
         }
 
         private double GetDistance(PointLatLng p1, PointLatLng p2)

@@ -12,9 +12,27 @@ namespace ICT365_Assignment1.Tests
     public class PhotoEventTest
     {
         [TestMethod()]
-        public void PhotoEventTest()
+        public void PhotoEventInheritanceTest()
         {
-            Assert.Fail();
+            Location loc = new Location(1.052251, 103.25215);
+            Event newEvent = new PhotoEvent("ID123", "/photo/test.png", loc);
+            Assert.IsTrue(newEvent is PhotoEvent);
+        }
+
+        [TestMethod()]
+        public void PhotoEventConstructorTest()
+        {
+            Location loc = new Location(1.052251, 103.25215);
+            Event newEvent = new PhotoEvent("ID123", "/photo/test.png", loc);
+
+            if (newEvent is PhotoEvent photoEvent)
+            {
+                Assert.AreEqual("/photo/test.png", photoEvent.Path);
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
     }
 }

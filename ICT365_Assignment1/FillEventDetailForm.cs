@@ -12,13 +12,14 @@ namespace ICT365_Assignment1
         public FillEventDetailForm(EventFactory.EventType EventType, Location SelectedLocation)
         {
             InitializeComponent();
-            txtEventId.Text = "ID1234";
             this.SelectedLocation = SelectedLocation;
             this.EventType = EventType;
         }
 
         private void FillEventDetailForm_Load(object sender, EventArgs e)
         {
+            var count = MainForm.result.Count + 1;
+            txtEventId.Text = "ID" + count;
             txtEventType.Text = EventType.ToString();
             dateTimePicker1.Hide();
             dateTimePicker2.Hide();
@@ -190,22 +191,28 @@ namespace ICT365_Assignment1
                 else if (EventType == EventFactory.EventType.Photo)
                 {
                     newEvent = new PhotoEvent(txtEventId.Text, file.FileName, SelectedLocation);
+                    SaveFile(path);
                 }
                 else if (EventType == EventFactory.EventType.Video)
                 {
                     string startTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
                     string endTime = dateTimePicker2.Value.ToString("yyyyMMddHHmmss");
                     newEvent = new VideoEvent(txtEventId.Text, file.FileName, SelectedLocation, startTime, endTime);
-                    
+                    SaveFile(path);
+
                 }
                 else
                 {
                     string startTime = dateTimePicker1.Value.ToString("yyyyMMddHHmmss");
                     string endTime = dateTimePicker2.Value.ToString("yyyyMMddHHmmss");
                     newEvent = new TracklogEvent(txtEventId.Text, file.FileName, textBox2.Text, startTime, endTime);
+                    SaveFile(path);
                 }
-                SaveFile(path);
-                MessageBox.Show(newEvent.ToString());
+                newEvent.LinkedEventID.Add(MainForm.selectedEvent.EventID);
+                MainForm.selectedEvent.LinkedEventID.Add(newEvent.EventID);
+
+                // this line shows that the new event has been created successfully
+               //  MessageBox.Show(newEvent.ToString());
             }
             catch (Exception ex)
             {
@@ -213,33 +220,19 @@ namespace ICT365_Assignment1
                 this.Close();
             }
 
-
-
             //XmlSerializerNamespaces xmlNameSpace = new XmlSerializerNamespaces();
             //xmlNameSpace.Add("lle", "http://www.xyz.org/lifelogevents");
-
             //XmlSerializer serializer = new XmlSerializer(typeof(Event));
-            //XmlSerializer childSerializer = new XmlSerializer(newEvent.GetType());
 
             // Create a FileStream to write with.
-            //Stream writer = new FileStream("lifelog-events.xml", FileMode.Append);
+            //Stream writer = new FileStream(@"lifelog-events.xml", FileMode.Append);
 
-            //childSerializer.Serialize(writer, newEvent, xmlNameSpace);
             // Serialize the object, and close the TextWriter
             //serializer.Serialize(writer, newEvent, xmlNameSpace);
             //writer.Close();
 
-
-            //XmlDocument xdoc = new XmlDocument();
-            //xdoc.Load("lifelog-events.xml");
-
-            //XmlNode parentNode = xdoc.DocumentElement;
-            //XmlNode childNode = xdoc.CreateElement(nFc + "Event");
-            //childNode.InnerText = txtEventId.Text;
-
-            //parentNode.AppendChild(childNode);
-            //xdoc.Save("lifelog-events.xml");
-
+            MainForm.result.Add(newEvent.EventID, newEvent);
+            MainForm.instance.PlotNewMarker(newEvent);
             this.Close();
         }
 
@@ -250,7 +243,8 @@ namespace ICT365_Assignment1
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
 
-                var fileName = txtEventId.Text + "_" + Path.GetFileName(file.FileName);
+                string currDateTimeString = DateTime.Now.ToString("yyyyMMddHHmmss");
+                var fileName = txtEventId.Text + "_" + currDateTimeString + "_" + Path.GetFileName(file.FileName);
                 path = path + fileName;
                 File.Copy(file.FileName, path);
             }
